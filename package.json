@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"nodemon server/src/index.ts\" \"cd client && npm run dev\"",
-    "dev": "node server/src/index.ts",
+    "dev": "nodemon server/src/index.ts",
     "vercel-build": "npm run dev && cd client && npm run dev",
     "build": "cd client && npm run build && cd ..",
     "install": "cd client && npm install && cd .. && cd server && npm install"
