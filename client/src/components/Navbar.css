@@ -1,0 +1,36 @@
+.navbar {
+    background-color: #333;
+    position: fixed;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+.navbar-links {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    width: 100%;  /* Ensures full-width container */
+    box-sizing: border-box;  /* Prevents padding from affecting width */
+}
+
+.navbar-links li {
+    margin: 0 20px;
+}
+
+.navbar-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.navbar-link:hover {
+    color: #ff9800;
+}

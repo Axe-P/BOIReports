@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS", // For server-side
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist", // Root level output directory
+    "rootDirs": ["server/src", "client/src"], // Combine server and client source directories
+    "baseUrl": "./",
+    "paths": {
+      "*": ["node_modules/*", "src/*"]
+    }
+  },
+  "include": [
+    "server/src/**/*",
+    "client/src/**/*"
+  ],
+  "exclude": ["node_modules"]
+}
