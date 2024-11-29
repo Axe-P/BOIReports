@@ -17,6 +17,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
   // Get the token from Authorization header, query parameters, or body
   let token = req.headers.authorization?.split(' ')[1] || req.query.token || req.body.token;
   console.log("Received token:", token);  // Log to see where the token comes from
+  console.log("Req headers:", req.headers);  // Log to see the headers
 
   // Check if token is provided
   if (!token) {
