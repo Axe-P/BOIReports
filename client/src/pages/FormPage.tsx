@@ -104,7 +104,7 @@ const FormPage = () => {
     };
 
     try {
-      await axios.post('http://localhost:3001/api/reports/submit', dataToSend, {
+      await axios.post('https://boireports.onrender.com/api/reports/submit', dataToSend, {
         headers: { 'Content-Type': 'application/json' },
       });
       console.log('Report submitted');
