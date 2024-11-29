@@ -2,11 +2,9 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -64,5 +62,37 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  body {
+    background-color: #f0f0f0; /* Light background for mobile */
+    color: #333; /* Dark text on light background */
+    font-size: 1rem; /* Adjust font size for readability */
+  }
+
+  h1 {
+    font-size: 2.5em; /* Reduce heading size for mobile */
+  }
+
+  button {
+    background-color: #f0f0f0; /* Lighter button background for mobile */
+    color: #333; /* Dark button text */
+    padding: 0.8em 1.4em; /* Adjust padding for better clickability */
+  }
+
+  button:hover {
+    border-color: #535bf2;
+  }
+
+  form {
+    padding: 1em; /* Add padding to form for mobile */
+  }
+
+  input, textarea {
+    width: 100%; /* Full width inputs on mobile */
+    padding: 0.8em; /* Padding for form elements */
   }
 }
