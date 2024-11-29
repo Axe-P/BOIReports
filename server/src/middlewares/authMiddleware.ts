@@ -14,9 +14,9 @@ interface DecodedToken {
 }
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  // Extract token from Authorization header
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  console.log("Received token: ", token);
+  // Get the token from Authorization header, query parameters, or body
+  let token = req.header('Authorization')?.replace('Bearer ', '') || req.query.token || req.body.token;
+  console.log("Received token:", token);  // Log to see where the token comes from
 
   // Check if token is provided
   if (!token) {
