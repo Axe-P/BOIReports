@@ -12,12 +12,7 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 
-// CORS setup (limit to trusted origins)
-const allowedOrigins = ['http://localhost:3000', 'https://boi-reports.vercel.app/'];
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-};
-app.use(cors(options));  // This will allow only specified origins
+app.use(cors()); // Enable CORS
 
 // Middleware to parse JSON
 app.use(express.json());
