@@ -21,6 +21,7 @@ app.use(cors(options));  // This will allow only specified origins
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Connect to DB
 connectDB();
