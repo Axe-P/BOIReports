@@ -15,16 +15,17 @@ router.get('/all', authMiddleware, async (_req: Request, res: Response) => {
   }
 });
 
-// Route to delete a report by ID (accessible only to superuser)
-router.delete('/delete/:id', authMiddleware, async (req: Request, res: Response) => {
-  const { id } = req.params;
+// Route to delete a report by uniqueId (accessible only to superuser)
+router.delete('/delete/:uniqueId', authMiddleware, async (req: Request, res: Response) => {
+  const { uniqueId } = req.params;  // Get the uniqueId from the route parameters
 
   try {
-    const deletedReport = await Report.findByIdAndDelete(id);
+    // Find the report by uniqueId
+    const deletedReport = await Report.findOneAndDelete({ uniqueId });
 
     if (!deletedReport) {
-        res.status(404).json({ message: 'Report not found' });
-        return;
+      res.status(404).json({ message: 'Report not found' });
+      return;
     }
 
     res.status(200).json({ message: 'Report deleted successfully', deletedReport });

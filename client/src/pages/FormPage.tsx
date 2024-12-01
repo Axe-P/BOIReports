@@ -19,6 +19,7 @@ const FormPage = () => {
     address: Address;
     idNumber: string;
     idPhoto: string;
+    email: string; // Added email field
   }
 
   const [formData, setFormData] = useState<FormData>({
@@ -34,6 +35,7 @@ const FormPage = () => {
     },
     idNumber: '',
     idPhoto: '',
+    email: '', // Initialize email field
   });
 
   const [errors, setErrors] = useState<string[]>([]);
@@ -55,6 +57,7 @@ const FormPage = () => {
   const validateName = (name: string) => /^[A-Za-z\s]{2,20}$/.test(name);
   const validateZipCode = (zip: string) => /^\d{5}$/.test(zip);
   const validateIdNumber = (id: string) => /^\d+$/.test(id);
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // Added email validation
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,6 +89,11 @@ const FormPage = () => {
       newErrors.push('ID Number must contain only numbers.');
     }
 
+    // Validate Email
+    if (!validateEmail(formData.email)) {
+      newErrors.push('Please enter a valid email address.');
+    }
+
     // If there are errors, display them and don't submit the form
     if (newErrors.length > 0) {
       setErrors(newErrors);
@@ -101,6 +109,7 @@ const FormPage = () => {
       uniqueId: formData.idNumber,
       idPicture: formData.idPhoto,
       income: 5000,
+      email: formData.email, // Include email in the data sent to the server
     };
 
     try {
@@ -113,7 +122,6 @@ const FormPage = () => {
       console.error('Error submitting report:', error);
     }
   };
-  // this should be updated vercel?? ^^
 
   return (
     <div className="form-container">
@@ -256,6 +264,19 @@ const FormPage = () => {
             name="idPhoto"
             placeholder="ID Photo URL"
             value={formData.idPhoto}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
             onChange={handleInputChange}
             required
           />
