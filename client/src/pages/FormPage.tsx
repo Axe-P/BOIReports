@@ -15,6 +15,8 @@ const FormPage = () => {
     firstName: string;
     middleName: string;
     lastName: string;
+    legalBusinessName: string; // Added Legal Business Name
+    dba: string; // Added DBA field
     dateOfBirth: string;
     address: Address;
     idNumber: string;
@@ -26,6 +28,8 @@ const FormPage = () => {
     firstName: '',
     middleName: '',
     lastName: '',
+    legalBusinessName: '', // Initialize Legal Business Name field
+    dba: '', // Initialize DBA field
     dateOfBirth: '',
     address: {
       street: '',
@@ -79,6 +83,11 @@ const FormPage = () => {
       newErrors.push('Last Name must be between 2 and 20 characters long and contain only letters.');
     }
 
+    // Validate Legal Business Name (required)
+    if (!formData.legalBusinessName) {
+      newErrors.push('Legal Business Name is required.');
+    }
+
     // Validate Zip Code
     if (!validateZipCode(formData.address.zipCode)) {
       newErrors.push('Zip Code must be exactly 5 digits.');
@@ -104,11 +113,12 @@ const FormPage = () => {
       firstName: formData.firstName,
       middleName: formData.middleName,
       lastName: formData.lastName,
+      legalBusinessName: formData.legalBusinessName, // Send Legal Business Name
+      dba: formData.dba, // Send DBA if provided
       dateOfBirth: formData.dateOfBirth,
       address: formData.address,
       uniqueId: formData.idNumber,
       idPicture: formData.idPhoto,
-      income: 5000,
       email: formData.email, // Include email in the data sent to the server
     };
 
@@ -179,6 +189,33 @@ const FormPage = () => {
           />
         </div>
 
+        {/* New fields */}
+        <div className="form-group">
+          <label htmlFor="legalBusinessName">Legal Business Name</label>
+          <input
+            type="text"
+            id="legalBusinessName"
+            name="legalBusinessName"
+            placeholder="Legal Business Name"
+            value={formData.legalBusinessName}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="dba">DBA (Doing Business As)</label>
+          <input
+            type="text"
+            id="dba"
+            name="dba"
+            placeholder="DBA (Optional)"
+            value={formData.dba}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        {/* Continue with the rest of the form as before */}
         <div className="form-group">
           <label htmlFor="dateOfBirth">Date of Birth</label>
           <input
@@ -282,9 +319,7 @@ const FormPage = () => {
           />
         </div>
 
-        <button type="submit" className="submit-btn">
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

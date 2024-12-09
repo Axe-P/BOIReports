@@ -44,9 +44,13 @@ const reportSchema = new mongoose.Schema({
     type: String, // URL to the uploaded image
     required: true
   },
-  income: {
-    type: Number,
-    required: true
+  legalBusinessName: {
+    type: String,
+    required: true // newly added required field
+  },
+  DBA: {
+    type: String, // newly added optional field
+    required: false
   },
   createdAt: {
     type: Date,

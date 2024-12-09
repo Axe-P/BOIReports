@@ -9,7 +9,7 @@ const Navbar = () => {
           <Link to="/" className="navbar-link">Home</Link>
         </li>
         <li>
-          <Link to="/form" className="navbar-link">Start Form</Link>
+          <Link to="/form" className="navbar-link">File Now</Link>
         </li>
         <li>
           <a href="https://fincen.gov/boi" target="_blank" rel="noopener noreferrer" className="navbar-link">
