@@ -10,18 +10,18 @@ router.get('/all', authMiddleware, async (_req: Request, res: Response) => {
     const reports = await Report.find();
     res.status(200).json(reports);
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching reports:', err);
     res.status(500).json({ message: 'Error fetching reports' });
   }
 });
 
 // Route to delete a report by uniqueId (accessible only to superuser)
 router.delete('/delete/:uniqueId', authMiddleware, async (req: Request, res: Response) => {
-  const { uniqueId } = req.params;  // Get the uniqueId from the route parameters
+  const { uniqueId } = req.params; // Get the uniqueId from the route parameters
 
   try {
-    // Find the report by uniqueId
-    const deletedReport = await Report.findOneAndDelete({ uniqueId });
+    // Explicitly treat uniqueId as a string
+    const deletedReport = await Report.findOneAndDelete({ uniqueId: String(uniqueId) });
 
     if (!deletedReport) {
       res.status(404).json({ message: 'Report not found' });
@@ -30,7 +30,7 @@ router.delete('/delete/:uniqueId', authMiddleware, async (req: Request, res: Res
 
     res.status(200).json({ message: 'Report deleted successfully', deletedReport });
   } catch (err) {
-    console.error(err);
+    console.error('Error deleting report:', err);
     res.status(500).json({ message: 'Error deleting report' });
   }
 });

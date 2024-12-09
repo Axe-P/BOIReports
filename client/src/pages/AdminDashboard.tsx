@@ -34,24 +34,34 @@ const AdminDashboard: React.FC = () => {
       setSubmissions(response.data);
     } catch (err) {
       setError("Failed to fetch data. Please log in again.");
-      console.error(err); // For debugging purposes
+      console.error(err); // Debugging
     }
   };
 
   // Handle deletion of a submission
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (uniqueId: string) => {
     try {
       const token = localStorage.getItem("token");
-      // Send the DELETE request with the correct ID
-      await axios.delete(`https://boireports.onrender.com/api/admin/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      // Remove the deleted submission from the state
-      setSubmissions((prev) => prev.filter((submission) => submission.uniqueId !== id));
+      console.log("Attempting to delete uniqueId:", uniqueId); // Debugging
+      const response = await axios.delete(
+        `https://boireports.onrender.com/api/admin/delete/${uniqueId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log("Delete response:", response.data); // Debugging
+      // Remove the deleted submission from state
+      setSubmissions((prev) =>
+        prev.filter((submission) => submission.uniqueId !== uniqueId)
+      );
       alert("Submission deleted successfully.");
-    } catch (err) {
+    } catch (err: unknown) {
       alert("Failed to delete the submission.");
-      console.error(err); // For debugging purposes
+      if (axios.isAxiosError(err)) {
+        console.error("Error deleting submission:", err.response || err); // Debugging
+      } else {
+        console.error("Error deleting submission:", err); // Debugging
+      }
     }
   };
 
@@ -69,10 +79,19 @@ const AdminDashboard: React.FC = () => {
           {submissions.map((submission) => (
             <div key={submission.uniqueId} className="submission-card">
               <h2>{`${submission.firstName} ${submission.lastName}`}</h2>
-              <p><strong>Email:</strong> {submission.email}</p>
-              <p><strong>Details:</strong> ID Number: {submission.uniqueId}</p>
-              <p><strong>Address:</strong> {`${submission.address.street}, ${submission.address.city}, ${submission.address.state}, ${submission.address.zipCode}`}</p>
-              <button onClick={() => handleDelete(submission.uniqueId)}>Delete</button>
+              <p>
+                <strong>Email:</strong> {submission.email}
+              </p>
+              <p>
+                <strong>Details:</strong> ID Number: {submission.uniqueId}
+              </p>
+              <p>
+                <strong>Address:</strong>{" "}
+                {`${submission.address.street}, ${submission.address.city}, ${submission.address.state}, ${submission.address.zipCode}`}
+              </p>
+              <button onClick={() => handleDelete(submission.uniqueId)}>
+                Delete
+              </button>
               <button>Edit</button> {/* Add edit functionality as needed */}
             </div>
           ))}
