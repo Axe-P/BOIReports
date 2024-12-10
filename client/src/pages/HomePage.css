@@ -1,64 +1,62 @@
 /* Ensure body and html are full height and width */
 html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%; /* Ensure it spans full width */
-    height: 100%; /* Ensure it spans full height */
-    display: flex;
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    box-sizing: border-box; /* Include padding in the element's size */
-  }
-  
-  /* Main container that holds the content */
+  margin: 0;
+  padding: 0;
+  width: 100%; /* Ensure it spans full width */
+  height: 100%; /* Ensure it spans full height */
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  box-sizing: border-box; /* Include padding in the element's size */
+}
+
+/* Main container that holds the content */
+.home-page {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  height: 100%; /* Take full height of the screen */
+  text-align: center; /* Center text inside */
+  width: 100%; /* Full width */
+  box-sizing: border-box; /* Ensure padding doesn't overflow */
+  padding: 25px;
+}
+
+/* Ensure description and buttons stack well on smaller screens */
+.boira-description, .boir-info, .cta-text {
+  font-size: 1.2rem;
+}
+
+.cta-text {
+  margin-top: 20px;
+}
+
+.start-filing-btn {
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.start-filing-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
   .home-page {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
-    height: 100%; /* Take full height of the screen */
-    text-align: center; /* Center text inside */
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Ensure padding doesn't overflow */
-    padding: 25px;
+    padding: 15px; /* Slightly reduce padding on smaller screens */
   }
-  
-  /* Additional styling for your content */
-  .boir-description {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-  
-  .boir-info {
-    font-size: 1rem;
-    list-style-type: none;
-    padding-left: 0;
-    text-align: center;
-    display: inline-block;
-    margin-top: 10px;
-  }
-  
-  .boir-info li {
-    margin-bottom: 5px;
-  }
-  
-  .cta-text {
-    font-size: 1.2rem;
-    margin-top: 20px;
-  }
-  
+
   .start-filing-btn {
-    padding: 15px 30px;
-    font-size: 1.5rem;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+    width: 100%; /* Make the button full-width */
+    padding: 10px; /* Adjust padding for smaller screens */
+    font-size: 1.2rem; /* Ensure button text fits */
   }
-  
-  .start-filing-btn:hover {
-    background-color: #0056b3;
-  }
+}

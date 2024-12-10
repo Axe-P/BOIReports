@@ -18,9 +18,9 @@
   align-items: center; /* Center the content horizontally */
   text-align: center;
   padding: 0px;
-  padding-top: 425px;
+  padding-top: 425px; /* Keep your padding-top */
   box-sizing: border-box;
-  margin-top: calc(60px + 20px); /* No extra margin here */
+  margin-top: calc(60px + 20px); /* Same margin as your code */
 }
 
 form {
@@ -32,7 +32,7 @@ form {
   background-color: white; /* White background for form */
   border-radius: 8px; /* Rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  margin-top: calc(100px + 20px); /* Ensure form is just below the navbar */
+  margin-top: calc(100px + 20px); /* Same margin for form */
 }
 
 form input {
@@ -78,25 +78,66 @@ form button:active {
   color: #333;
 }
 
-/* Add a responsive design to center the form properly */
-@media (max-width: 480px) {
+/* Media query for smaller screens like iPhone SE, etc. */
+@media (max-width: 768px) {
   .form-container {
-    padding: 20px; /* Add some padding on small screens */
-    margin-top: 0; /* No extra space at the top */
-  }
-
-  form {
-    padding: 20px;
-    width: 100%; /* Ensure form takes full width on small screens */
-    margin-top: calc(60px + 20px); /* Same as above for mobile */
+    padding: 20px; /* More padding on small screens */
   }
 
   .form-top {
-    margin-top: 0; /* Reduce margin on small screens */
-    padding-top: 300px;
+    margin-top: 0; /* Reduce margin */
+    padding-top: 300px; /* Adjust padding-top for smaller devices */
+  }
+
+  form {
+    padding: 15px;
+    width: 100%;
+    max-width: 100%; /* Ensure the form stretches fully */
   }
 
   .form-description {
+    font-size: 14px; /* Make the form description smaller */
+  }
+
+  /* Make inputs and buttons full-width on mobile */
+  form input, form button {
+    font-size: 14px; /* Slightly smaller font size */
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  /* Make the button full-width on small devices */
+  form button {
+    width: 100%; /* Button stretches across the full screen */
+  }
+
+  .form-top h2 {
+    font-size: 1.5rem; /* Reduce font size for mobile */
+  }
+
+  .form-top h3 {
+    font-size: 1.2rem; /* Slightly smaller subheading */
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 10px; /* Further reduce padding on very small screens */
+  }
+
+  form {
+    padding: 10px;
+  }
+
+  .form-top h2 {
+    font-size: 1.3rem; /* Even smaller heading */
+  }
+
+  .form-top h3 {
+    font-size: 1.1rem; /* Smaller subheading */
+  }
+
+  form input, form button {
     font-size: 14px;
+    padding: 10px;
   }
 }
