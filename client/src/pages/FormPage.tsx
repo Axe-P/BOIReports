@@ -1,41 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { FormData, Person } from '../types/formTypes';  // Adjust the import based on your types file
+import PersonForm from '../components/PersonForm';  // Adjust the import path as needed
 import './FormPage.css';
 
-const FormPage = () => {
-  interface Address {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  }
-
-  interface Person {
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    dateOfBirth: string;
-    address: Address;
-    uniqueId: string;
-    email: string;
-    phoneNumber: string; // New field
-    idPicture: string; // Changed from string | null to string
-  }
-
-  interface FormData {
-    legalBusinessName: string;
-    DBA: string;
-    people: Person[]; // Array of people
-  }
-
+const FormPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     legalBusinessName: '',
     DBA: '',
-    people: [{ 
-      firstName: '', middleName: '', lastName: '', dateOfBirth: '', 
-      address: { street: '', city: '', state: '', zipCode: '' }, 
-      uniqueId: '', email: '', phoneNumber: '', idPicture: '' // Empty string instead of null
+    people: [{
+      firstName: '', middleName: '', lastName: '', dateOfBirth: '',
+      address: { street: '', city: '', state: '', zipCode: '' },
+      uniqueId: '', email: '', phoneNumber: '', idPicture: ''
     }],
   });
 
@@ -47,13 +24,9 @@ const FormPage = () => {
     const { name, value } = e.target;
     const updatedPeople = [...formData.people];
     if (name in updatedPeople[index].address) {
-      updatedPeople[index].address[name as keyof Address] = value;
+      updatedPeople[index].address[name as keyof Person['address']] = value;
     } else {
-      if (name === 'idPicture') {
-        updatedPeople[index].idPicture = value; // Handle as string
-      } else {
-        updatedPeople[index][name as keyof Omit<Person, 'address' | 'idPicture'>] = value;
-      }
+      updatedPeople[index][name as keyof Omit<Person, 'address'>] = value;
     }
     setFormData({ ...formData, people: updatedPeople });
   };
@@ -63,16 +36,16 @@ const FormPage = () => {
     if (formData.people.length < 4) {
       setFormData({
         ...formData,
-        people: [...formData.people, { 
-          firstName: '', middleName: '', lastName: '', dateOfBirth: '', 
-          address: { street: '', city: '', state: '', zipCode: '' }, 
-          uniqueId: '', email: '', phoneNumber: '', idPicture: '' // Empty string instead of null
-        }],
+        people: [...formData.people, {
+          firstName: '', middleName: '', lastName: '', dateOfBirth: '',
+          address: { street: '', city: '', state: '', zipCode: '' },
+          uniqueId: '', email: '', phoneNumber: '', idPicture: ''
+        }]
       });
     }
   };
 
-  // Function to remove a person, but not the first person
+  // Function to remove a person (but not the first person)
   const removePerson = (index: number) => {
     if (index === 0) return; // Don't allow removal of the first person
     const updatedPeople = formData.people.filter((_, i) => i !== index);
@@ -86,6 +59,7 @@ const FormPage = () => {
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePhoneNumber = (phone: string) => /^\d{10}$/.test(phone); // Phone number validation
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -158,6 +132,7 @@ const FormPage = () => {
           <h3>All fields must be completed!</h3>
           <p>Upfront pricing: $125 to file your BOI Report</p>
         </div>
+
         <div className="form-group">
           <label htmlFor="legalBusinessName">Legal Business Name</label>
           <input
@@ -184,164 +159,25 @@ const FormPage = () => {
         </div>
 
         {formData.people.map((person, index) => (
-          <div key={index} className="person-form">
-            <h4>Person {index + 1}</h4>
-            <div className="form-group">
-              <label htmlFor={`firstName-${index}`}>First Name</label>
-              <input
-                type="text"
-                id={`firstName-${index}`}
-                name="firstName"
-                placeholder="First Name"
-                value={person.firstName}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`middleName-${index}`}>Middle Name</label>
-              <input
-                type="text"
-                id={`middleName-${index}`}
-                name="middleName"
-                placeholder="Middle Name"
-                value={person.middleName}
-                onChange={(e) => handleInputChange(index, e)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`lastName-${index}`}>Last Name</label>
-              <input
-                type="text"
-                id={`lastName-${index}`}
-                name="lastName"
-                placeholder="Last Name"
-                value={person.lastName}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`dateOfBirth-${index}`}>Date of Birth</label>
-              <input
-                type="date"
-                id={`dateOfBirth-${index}`}
-                name="dateOfBirth"
-                value={person.dateOfBirth}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`street-${index}`}>Street</label>
-              <input
-                type="text"
-                id={`street-${index}`}
-                name="street"
-                placeholder="Street"
-                value={person.address.street}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`city-${index}`}>City</label>
-              <input
-                type="text"
-                id={`city-${index}`}
-                name="city"
-                placeholder="City"
-                value={person.address.city}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`state-${index}`}>State</label>
-              <input
-                type="text"
-                id={`state-${index}`}
-                name="state"
-                placeholder="State"
-                value={person.address.state}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`zipCode-${index}`}>Zip Code</label>
-              <input
-                type="text"
-                id={`zipCode-${index}`}
-                name="zipCode"
-                placeholder="Zip Code"
-                value={person.address.zipCode}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`uniqueId-${index}`}>Unique ID Number</label>
-              <input
-                type="text"
-                id={`uniqueId-${index}`}
-                name="uniqueId"
-                placeholder="Unique ID"
-                value={person.uniqueId}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`email-${index}`}>Email</label>
-              <input
-                type="email"
-                id={`email-${index}`}
-                name="email"
-                placeholder="Email"
-                value={person.email}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`phoneNumber-${index}`}>Phone Number</label>
-              <input
-                type="text"
-                id={`phoneNumber-${index}`}
-                name="phoneNumber"
-                placeholder="Phone Number"
-                value={person.phoneNumber}
-                onChange={(e) => handleInputChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`idPicture-${index}`}>ID Picture (URL or Path)</label>
-              <input
-                type="text"
-                id={`idPicture-${index}`}
-                name="idPicture"
-                placeholder="ID Picture URL or Path"
-                value={person.idPicture}
-                onChange={(e) => handleInputChange(index, e)}
-              />
-            </div>
-            {index > 0 && (
-              <button
-                type="button"
-                onClick={() => removePerson(index)}
-                className="remove-person-btn"
-              >
-                Remove Person
-              </button>
-            )}
-          </div>
+          <PersonForm
+            key={index}
+            person={person}
+            onChange={handleInputChange}
+            index={index}
+            removePerson={removePerson}
+          />
         ))}
 
-        <button type="button" onClick={addPerson} className="add-person-btn">
-          Add Person
-        </button>
+        {/* Add Person button is disabled if there are 4 people */}
+        {formData.people.length < 4 && (
+          <button
+            type="button"
+            onClick={addPerson}
+            className="add-person-btn"
+          >
+            Add Person
+          </button>
+        )}
 
         <button type="submit" className="submit-btn">
           Submit
