@@ -119,6 +119,46 @@ form button:active {
   }
 }
 
+/* Media query for tablets (768px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .form-container {
+    padding: 20px; /* Add padding for tablets */
+  }
+
+  .form-top {
+    margin-top: 0; /* Ensure no extra space above the form */
+    padding-top: 380px; /* Adjust padding-top for tablets */
+  }
+
+  form {
+    padding: 20px; /* Add padding to the form */
+    width: 100%;
+    max-width: 80%; /* Ensure the form does not stretch too wide */
+  }
+
+  .form-description {
+    font-size: 16px; /* Increase the description font size for readability */
+  }
+
+  /* Ensure form inputs and buttons look good on tablet */
+  form input, form button {
+    font-size: 15px; /* Slightly larger font size */
+    padding: 12px; /* Padding for better touch accessibility */
+  }
+
+  form button {
+    width: 100%; /* Button stretches across the full screen */
+  }
+
+  .form-top h2 {
+    font-size: 1.8rem; /* Adjust heading font size for tablets */
+  }
+
+  .form-top h3 {
+    font-size: 1.5rem; /* Increase subheading font size */
+  }
+}
+
 @media (max-width: 500px) {
   .form-container {
     padding: 10px; /* Further reduce padding on very small screens */
