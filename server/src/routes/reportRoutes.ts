@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Route to submit a new report (public access)
 router.post('/submit', async (req, res) => {
-  const { peopleData, legalBusinessName, DBA, taxIdType, taxIdNumber } = req.body;
+  const { peopleData, legalBusinessName, DBA, taxId, taxIdNumber } = req.body;
 
   // Validate that peopleData is an array and contains no more than 4 people
   if (!Array.isArray(peopleData) || peopleData.length === 0 || peopleData.length > 4) {
@@ -62,13 +62,13 @@ router.post('/submit', async (req, res) => {
     'Foreign': /^[A-Za-z0-9]+$/ // Alphanumeric for Foreign tax ID
   };
 
-  if (!taxIdType || !taxIdNumber) {
+  if (!taxId || !taxId.number) {
     res.status(400).json({ message: 'Tax ID Type and Tax ID Number are required for the business.' });
     return;
   }
 
-  const taxIdPattern = validTaxIdPatterns[taxIdType as keyof typeof validTaxIdPatterns];
-  if (!taxIdPattern || !taxIdPattern.test(taxIdNumber)) {
+  const taxIdPattern = validTaxIdPatterns[taxId.type as keyof typeof validTaxIdPatterns];
+  if (!taxIdPattern || !taxIdPattern.test(taxId.number)) {
     res.status(400).json({ message: 'Invalid Tax ID Type or Number for the business.' });
     return;
   }
@@ -79,8 +79,7 @@ router.post('/submit', async (req, res) => {
       peopleData,
       legalBusinessName,
       DBA,
-      taxIdType,
-      taxIdNumber,
+      taxId,  // Use the nested taxId object directly
     });
 
     // Save the new report to the database
