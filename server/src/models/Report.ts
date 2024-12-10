@@ -41,20 +41,22 @@ const personSchema = new mongoose.Schema({
     unique: true
   },
   idPicture: {
-    type: String, // URL to the uploaded image
+    type: File, // URL to the uploaded image
     required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    match: [/.+@.+\..+/, 'Please provide a valid email address.']
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+    match: [/^\d{10}$/, 'Please provide a valid 10-digit phone number.']
   }
 }, { _id: false });  // Ensures that each person does not get its own ID, since it's part of an array
 
 const reportSchema = new mongoose.Schema({
-  legalBusinessName: {
-    type: String,
-    required: true
-  },
-  DBA: {
-    type: String, // optional field
-    required: false
-  },
   peopleData: {
     type: [personSchema], // This will hold an array of people data
     required: true,
@@ -64,6 +66,14 @@ const reportSchema = new mongoose.Schema({
       },
       message: 'Cannot have more than 4 people.'
     }
+  },
+  legalBusinessName: {
+    type: String,
+    required: true
+  },
+  DBA: {
+    type: String, // optional field
+    required: false
   },
   createdAt: {
     type: Date,

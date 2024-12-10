@@ -18,22 +18,27 @@ router.post('/submit', async (req, res) => {
     const person = peopleData[i];
 
     // Check required fields for each person
-    if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || !person.idPicture || !person.address || !person.address.street || !person.address.city || !person.address.state || !person.address.zipCode) {
+    if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || 
+        !person.idPicture || !person.address || !person.address.street || 
+        !person.address.city || !person.address.state || !person.address.zipCode || 
+        !person.email || !person.phoneNumber) {
       res.status(400).json({ message: `Person ${i + 1} has missing required fields.` });
       return;
     }
-  }
 
-  // Validate legalBusinessName and DBA for the report
-  if (!legalBusinessName || typeof legalBusinessName !== 'string') {
-    res.status(400).json({ message: 'legalBusinessName is required and should be a string.' });
-    return;
-  }
+    // Validate email and phone number format
+    const emailPattern = /.+@.+\..+/;
+    const phonePattern = /^\d{10}$/;
 
-  // DBA is optional, but if provided, should be a string
-  if (DBA && typeof DBA !== 'string') {
-    res.status(400).json({ message: 'DBA, if provided, should be a string.' });
-    return;
+    if (!emailPattern.test(person.email)) {
+      res.status(400).json({ message: `Person ${i + 1} has an invalid email format.` });
+      return;
+    }
+
+    if (!phonePattern.test(person.phoneNumber)) {
+      res.status(400).json({ message: `Person ${i + 1} has an invalid phone number format.` });
+      return;
+    }
   }
 
   try {

@@ -17,20 +17,26 @@ const FormPage = () => {
     lastName: string;
     dateOfBirth: string;
     address: Address;
-    idNumber: string;
+    uniqueId: string;
     email: string;
+    phoneNumber: string; // New field
+    idPicture: File | null; // New field
   }
 
   interface FormData {
     legalBusinessName: string;
-    dba: string;
+    DBA: string;
     people: Person[]; // Array of people
   }
 
   const [formData, setFormData] = useState<FormData>({
     legalBusinessName: '',
-    dba: '',
-    people: [{ firstName: '', middleName: '', lastName: '', dateOfBirth: '', address: { street: '', city: '', state: '', zipCode: '' }, idNumber: '', email: '' }],
+    DBA: '',
+    people: [{ 
+      firstName: '', middleName: '', lastName: '', dateOfBirth: '', 
+      address: { street: '', city: '', state: '', zipCode: '' }, 
+      uniqueId: '', email: '', phoneNumber: '', idPicture: null 
+    }],
   });
 
   const [errors, setErrors] = useState<string[]>([]);
@@ -43,8 +49,20 @@ const FormPage = () => {
     if (name in updatedPeople[index].address) {
       updatedPeople[index].address[name as keyof Address] = value;
     } else {
-      updatedPeople[index][name as keyof Omit<Person, 'address'>] = value;
+      if (name === 'idPicture') {
+        updatedPeople[index].idPicture = (e.target as HTMLInputElement).files ? (e.target as HTMLInputElement).files![0] : null;
+      } else {
+        updatedPeople[index][name as keyof Omit<Person, 'address' | 'idPicture'>] = value;
+      }
     }
+    setFormData({ ...formData, people: updatedPeople });
+  };
+
+  // Function to handle file input changes (ID Photo)
+  const handleFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    const updatedPeople = [...formData.people];
+    updatedPeople[index].idPicture = file;
     setFormData({ ...formData, people: updatedPeople });
   };
 
@@ -53,7 +71,11 @@ const FormPage = () => {
     if (formData.people.length < 4) {
       setFormData({
         ...formData,
-        people: [...formData.people, { firstName: '', middleName: '', lastName: '', dateOfBirth: '', address: { street: '', city: '', state: '', zipCode: '' }, idNumber: '', email: '' }],
+        people: [...formData.people, { 
+          firstName: '', middleName: '', lastName: '', dateOfBirth: '', 
+          address: { street: '', city: '', state: '', zipCode: '' }, 
+          uniqueId: '', email: '', phoneNumber: '', idPicture: null 
+        }],
       });
     }
   };
@@ -70,6 +92,7 @@ const FormPage = () => {
   const validateZipCode = (zip: string) => /^\d{5}$/.test(zip);
   const validateIdNumber = (id: string) => /^\d+$/.test(id);
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhoneNumber = (phone: string) => /^\d{10}$/.test(phone); // Phone number validation
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,11 +113,14 @@ const FormPage = () => {
       if (!validateZipCode(person.address.zipCode)) {
         newErrors.push(`Zip Code of person ${index + 1} must be exactly 5 digits.`);
       }
-      if (!validateIdNumber(person.idNumber)) {
+      if (!validateIdNumber(person.uniqueId)) {
         newErrors.push(`ID Number of person ${index + 1} must contain only numbers.`);
       }
       if (!validateEmail(person.email)) {
         newErrors.push(`Please enter a valid email address for person ${index + 1}.`);
+      }
+      if (!validatePhoneNumber(person.phoneNumber)) {
+        newErrors.push(`Phone Number of person ${index + 1} must be exactly 10 digits.`);
       }
     });
 
@@ -106,8 +132,8 @@ const FormPage = () => {
     // Prepare data for submission
     const dataToSend = {
       legalBusinessName: formData.legalBusinessName,
-      dba: formData.dba,
-      people: formData.people,
+      DBA: formData.DBA,
+      peopleData: formData.people,
     };
 
     try {
@@ -118,11 +144,12 @@ const FormPage = () => {
       navigate('/completion');
     } catch (error) {
       console.error('Error submitting report:', error);
+      console.log(dataToSend);
     }
   };
 
   return (
-    <div className="form-container" style={{ paddingTop: formData.people.length > 1 ? `${925 * (formData.people.length - 1)}px` : '0' }}>
+    <div className="form-container" style={{ paddingTop: formData.people.length > 1 ? `${1140 * (formData.people.length - 1)}px` : '0' }}>
       {errors.length > 0 && (
         <div className="error-messages">
           <ul>
@@ -156,11 +183,11 @@ const FormPage = () => {
           <label htmlFor="dba">DBA (Doing Business As)</label>
           <input
             type="text"
-            id="dba"
-            name="dba"
+            id="DBA"
+            name="DBA"
             placeholder="DBA (Optional)"
-            value={formData.dba}
-            onChange={(e) => setFormData({ ...formData, dba: e.target.value })}
+            value={formData.DBA}
+            onChange={(e) => setFormData({ ...formData, DBA: e.target.value })}
           />
         </div>
 
@@ -262,13 +289,13 @@ const FormPage = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor={`idNumber-${index}`}>ID Number</label>
+              <label htmlFor={`uniqueId-${index}`}>ID Number</label>
               <input
                 type="text"
-                id={`idNumber-${index}`}
-                name="idNumber"
+                id={`uniqueId-${index}`}
+                name="uniqueId"
                 placeholder="ID Number"
-                value={person.idNumber}
+                value={person.uniqueId}
                 onChange={(e) => handleInputChange(index, e)}
                 required
               />
@@ -285,7 +312,30 @@ const FormPage = () => {
                 required
               />
             </div>
-            {index > 0 && (
+            <div className="form-group">
+              <label htmlFor={`phoneNumber-${index}`}>Phone Number</label>
+              <input
+                type="tel"
+                id={`phoneNumber-${index}`}
+                name="phoneNumber"
+                placeholder="Phone Number"
+                value={person.phoneNumber}
+                onChange={(e) => handleInputChange(index, e)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor={`idPicture-${index}`}>ID Photo</label>
+              <input
+                type="file"
+                id={`idPicture-${index}`}
+                name="idPicture"
+                accept="image/*"
+                onChange={(e) => handleFileChange(index, e)}
+                required
+              />
+            </div>
+            {formData.people.length > 1 && (
               <button type="button" onClick={() => removePerson(index)}>
                 Remove Person
               </button>
@@ -293,15 +343,10 @@ const FormPage = () => {
           </div>
         ))}
 
-<div className="form-actions">
-  {formData.people.length < 4 && (
-    <button type="button" onClick={addPerson}>
-      Add Person
-    </button>
-  )}
-  <button type="submit">Submit</button>
-</div>
-
+        <button type="button" onClick={addPerson} disabled={formData.people.length >= 4}>
+          Add Person
+        </button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
