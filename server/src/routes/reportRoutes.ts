@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Route to submit a new report (public access)
 router.post('/submit', async (req, res) => {
-  const { peopleData } = req.body;
+  const { peopleData, legalBusinessName, DBA } = req.body;
 
   // Validate that peopleData is an array and contains no more than 4 people
   if (!Array.isArray(peopleData) || peopleData.length === 0 || peopleData.length > 4) {
@@ -17,17 +17,31 @@ router.post('/submit', async (req, res) => {
   for (let i = 0; i < peopleData.length; i++) {
     const person = peopleData[i];
 
-    // Check required fields
-    if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || !person.idPicture || !person.legalBusinessName || !person.address || !person.address.street || !person.address.city || !person.address.state || !person.address.zipCode) {
+    // Check required fields for each person
+    if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || !person.idPicture || !person.address || !person.address.street || !person.address.city || !person.address.state || !person.address.zipCode) {
       res.status(400).json({ message: `Person ${i + 1} has missing required fields.` });
       return;
     }
   }
 
+  // Validate legalBusinessName and DBA for the report
+  if (!legalBusinessName || typeof legalBusinessName !== 'string') {
+    res.status(400).json({ message: 'legalBusinessName is required and should be a string.' });
+    return;
+  }
+
+  // DBA is optional, but if provided, should be a string
+  if (DBA && typeof DBA !== 'string') {
+    res.status(400).json({ message: 'DBA, if provided, should be a string.' });
+    return;
+  }
+
   try {
-    // Create a new report with the peopleData
+    // Create a new report with the peopleData and business information
     const newReport = new Report({
-      peopleData
+      peopleData,
+      legalBusinessName,
+      DBA
     });
 
     // Save the new report to the database
