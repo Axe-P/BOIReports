@@ -86,7 +86,7 @@ form button:active {
 
   .form-top {
     margin-top: 0; /* Reduce margin */
-    padding-top: 350px; /* Adjust padding-top for smaller devices */
+    padding-top: 450px; /* Adjust padding-top for smaller devices */
   }
 
   form {
