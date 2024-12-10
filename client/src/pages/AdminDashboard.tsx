@@ -47,22 +47,20 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  // Handle deletion of a submission
-  const handleDelete = async (legalBusinessName: string, DBA: string) => {
+  // Handle deletion of a submission by uniqueId
+  const handleDelete = async (uniqueId: string) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `https://boireports.onrender.com/api/admin/delete/${legalBusinessName}/${DBA}`,
+        `https://boireports.onrender.com/api/admin/delete/${uniqueId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       // Remove the deleted submission from state
       setSubmissions((prev) =>
-        prev.filter(
-          (submission) =>
-            submission.legalBusinessName !== legalBusinessName &&
-            submission.DBA !== DBA
+        prev.filter((submission) =>
+          submission.peopleData.every((person) => person.uniqueId !== uniqueId)
         )
       );
       alert("Submission deleted successfully.");
@@ -88,12 +86,15 @@ const AdminDashboard: React.FC = () => {
       {submissions.length > 0 ? (
         <div className="submissions-container">
           {submissions.map((submission) => (
-            <div key={`${submission.legalBusinessName}-${submission.DBA}`} className="submission-card">
+            <div
+              key={`${submission.legalBusinessName}-${submission.DBA}`}
+              className="submission-card"
+            >
               <h2>{submission.legalBusinessName}</h2>
               {submission.DBA && <h3>DBA: {submission.DBA}</h3>}
               <div>
                 <h4>People:</h4>
-                {submission.peopleData.map((person, index) => (
+                {submission.peopleData.map((person) => (
                   <div key={person.uniqueId} className="person-details">
                     <h5>
                       {person.firstName} {person.middleName} {person.lastName}
@@ -113,7 +114,7 @@ const AdminDashboard: React.FC = () => {
                     <p>
                       <strong>Address:</strong> {`${person.address.street}, ${person.address.city}, ${person.address.state}, ${person.address.zipCode}`}
                     </p>
-                    {/* You can also render the ID picture if needed */}
+                    {/* Render the ID picture if it exists */}
                     {person.idPicture && (
                       <img
                         src={person.idPicture}
@@ -124,12 +125,11 @@ const AdminDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <button
-                onClick={() => handleDelete(submission.legalBusinessName, submission.DBA)}
-              >
+
+              {/* Delete button */}
+              <button onClick={() => handleDelete(submission.peopleData[0].uniqueId)}>
                 Delete
               </button>
-              <button>Edit</button> {/* Add edit functionality as needed */}
             </div>
           ))}
         </div>
