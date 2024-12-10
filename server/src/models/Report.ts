@@ -48,15 +48,17 @@ const personSchema = new mongoose.Schema({
       required: true,
     },
   },
-  // Tax Identification Type field
-  taxIdentificationType: {
-    type: String,
-    enum: ['EIN', 'SSN/TIN', 'Foreign'],
-    required: true,
-  },
-  taxIdentificationNumber: {
-    type: String,
-    required: true, // You can add validation for format if needed (e.g., SSN, EIN)
+  // Update taxId field to be a nested object like uniqueId
+  taxId: {
+    type: {
+      type: String,
+      enum: ['EIN', 'SSN/TIN', 'Foreign'],
+      required: true,
+    },
+    number: {
+      type: String,
+      required: true, // You can add format validation for SSN, EIN, etc.
+    },
   },
   idPicture: {
     type: String, // URL to the uploaded image (optional)

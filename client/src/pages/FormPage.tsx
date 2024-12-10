@@ -47,6 +47,9 @@ const FormPage: React.FC = () => {
           errors: {} // Initialize error object for new person
         }]
       });
+      console.log("Added new person:", formData.people);
+    } else {
+      console.log("Max number of people (4) reached.");
     }
   };
 
@@ -55,6 +58,7 @@ const FormPage: React.FC = () => {
     if (index === 0) return; // Don't allow removal of the first person
     const updatedPeople = formData.people.filter((_, i) => i !== index);
     setFormData({ ...formData, people: updatedPeople });
+    console.log(`Removed person at index ${index}:`, updatedPeople);
   };
 
   // Validation functions (including new ones)
@@ -68,6 +72,7 @@ const FormPage: React.FC = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submission started...");
 
     const newErrors: string[] = [];
     const updatedPeople = [...formData.people];
@@ -115,19 +120,32 @@ const FormPage: React.FC = () => {
     });
 
     if (newErrors.length > 0) {
+      console.log("Validation errors found:", newErrors);
       setErrors(newErrors); // Set global errors
       setFormData({ ...formData, people: updatedPeople }); // Update the form data with person-specific errors
       return;  // If there are errors, don't submit the form
     }
 
-    // Prepare data for submission
+    // Prepare data for submission (adjust to match backend format)
     const dataToSend = {
       legalBusinessName: formData.legalBusinessName,
       DBA: formData.DBA,
       peopleData: formData.people.map(person => {
-        const { ...personWithoutErrors } = person;
-        return personWithoutErrors;
-      }), // Exclude errors from the data sent
+        const { uniqueIdType, uniqueIdNumber, taxIdType, taxIdNumber, ...personWithoutErrors } = person; // Exclude errors and other unnecessary fields
+
+        // Nest uniqueId and taxId data properly
+        return {
+          ...personWithoutErrors,
+          uniqueId: {
+            type: uniqueIdType,
+            number: uniqueIdNumber,
+          },
+          taxId: {
+            type: taxIdType,
+            number: taxIdNumber,
+          },
+        };
+      }),
     };
 
     console.log("Data being sent to backend:", dataToSend); // Log the data to be sent
@@ -140,7 +158,7 @@ const FormPage: React.FC = () => {
       navigate('/completion');
     } catch (error) {
       console.error('Error submitting report:', error);
-      console.log(dataToSend); // Log the data again in case of an error
+      console.log("Failed data:", dataToSend); // Log the data again in case of an error
     }
   };
 
