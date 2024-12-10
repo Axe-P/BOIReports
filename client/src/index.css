@@ -16,6 +16,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -44,9 +45,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -57,16 +60,18 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
 }
 
-/* Mobile-specific styles */
-@media (max-width: 768px) {
+/* Mobile and smaller screens (portrait or landscape) */
+@media (max-width: 768px), (max-height: 1024px) and (orientation: landscape) {
   body {
     background-color: #f0f0f0; /* Light background for mobile */
     color: #333; /* Dark text on light background */
@@ -94,5 +99,25 @@ button:focus-visible {
   input, textarea {
     width: 100%; /* Full width inputs on mobile */
     padding: 0.8em; /* Padding for form elements */
+  }
+}
+
+/* Additional adjustment for tablets (portrait or landscape) */
+@media (max-width: 1024px) {
+  body {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+
+  h1 {
+    font-size: 2.8em; /* Slightly larger heading for tablet screens */
+  }
+
+  button {
+    padding: 1em 2em; /* Slightly larger button on tablets */
+  }
+
+  input, textarea {
+    padding: 1em; /* Larger padding for input fields */
   }
 }
