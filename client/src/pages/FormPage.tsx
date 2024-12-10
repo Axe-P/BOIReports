@@ -317,13 +317,14 @@ const FormPage = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor={`idPicture-${index}`}>ID Picture</label>
+              <label htmlFor={`idPicture-${index}`}>ID Picture (URL or Path)</label>
               <input
-                type="file"
+                type="text"
                 id={`idPicture-${index}`}
                 name="idPicture"
+                placeholder="ID Picture URL or Path"
+                value={person.idPicture}
                 onChange={(e) => handleInputChange(index, e)}
-                required
               />
             </div>
             {index > 0 && (
