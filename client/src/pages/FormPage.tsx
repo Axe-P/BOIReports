@@ -115,7 +115,7 @@ const FormPage: React.FC = () => {
   };
 
   return (
-    <div className="form-container" style={{ paddingTop: formData.people.length > 1 ? `${1140 * (formData.people.length - 1)}px` : '0' }}>
+    <div className="form-container" style={{ paddingTop: formData.people.length > 1 ? `${1100 * (formData.people.length - 1)}px` : '0' }}>
       {errors.length > 0 && (
         <div className="error-messages">
           <ul>
