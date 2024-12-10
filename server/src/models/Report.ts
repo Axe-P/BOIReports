@@ -41,8 +41,8 @@ const personSchema = new mongoose.Schema({
     unique: true
   },
   idPicture: {
-    type: File, // URL to the uploaded image
-    required: true
+    type: String, // URL to the uploaded image
+    required: false
   },
   email: {
     type: String,
