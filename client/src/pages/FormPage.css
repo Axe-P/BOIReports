@@ -127,7 +127,7 @@ form button:active {
 
   .form-top {
     margin-top: 0; /* Ensure no extra space above the form */
-    padding-top: 540px; /* Adjust padding-top for tablets */
+    padding-top: 700px; /* Adjust padding-top for tablets */
   }
 
   form {
