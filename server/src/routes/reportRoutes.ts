@@ -5,36 +5,29 @@ const router = express.Router();
 
 // Route to submit a new report (public access)
 router.post('/submit', async (req, res) => {
-  const {
-    firstName,
-    middleName,
-    lastName,
-    dateOfBirth,
-    address,
-    uniqueId,
-    idPicture,
-    legalBusinessName, // New required field
-    DBA // New optional field
-  } = req.body;
+  const { peopleData } = req.body;
 
-  try {
-    // Validate required fields
-    if (!legalBusinessName) {
-      res.status(400).json({ message: 'Legal Business Name is required.' });
+  // Validate that peopleData is an array and contains no more than 4 people
+  if (!Array.isArray(peopleData) || peopleData.length === 0 || peopleData.length > 4) {
+    res.status(400).json({ message: 'You must provide between 1 and 4 people.' });
+    return;
+  }
+
+  // Validate required fields for each person
+  for (let i = 0; i < peopleData.length; i++) {
+    const person = peopleData[i];
+
+    // Check required fields
+    if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || !person.idPicture || !person.legalBusinessName || !person.address || !person.address.street || !person.address.city || !person.address.state || !person.address.zipCode) {
+      res.status(400).json({ message: `Person ${i + 1} has missing required fields.` });
       return;
     }
+  }
 
-    // Create a new report with the data
+  try {
+    // Create a new report with the peopleData
     const newReport = new Report({
-      firstName,
-      middleName,
-      lastName,
-      dateOfBirth,
-      address,
-      uniqueId,
-      idPicture,
-      legalBusinessName,
-      DBA // Optional field; will be undefined if not provided
+      peopleData
     });
 
     // Save the new report to the database

@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
-const reportSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true
   },
   middleName: {
     type: String,
-    required: false // middle name is optional
+    required: false
   },
   lastName: {
     type: String,
@@ -46,11 +46,24 @@ const reportSchema = new mongoose.Schema({
   },
   legalBusinessName: {
     type: String,
-    required: true // newly added required field
+    required: true
   },
   DBA: {
-    type: String, // newly added optional field
+    type: String, // optional field
     required: false
+  }
+}, { _id: false });  // Ensures that each person does not get its own ID, since it's part of an array
+
+const reportSchema = new mongoose.Schema({
+  peopleData: {
+    type: [personSchema], // This will hold an array of people data
+    required: true,
+    validate: {
+      validator: function (v: any) {
+        return v.length <= 4; // Ensure no more than 4 people
+      },
+      message: 'Cannot have more than 4 people.'
+    }
   },
   createdAt: {
     type: Date,
