@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { FormData, Person } from '../types/formTypes';  // Adjust the import based on your types file
-import PersonForm from '../components/PersonForm';  // Adjust the import path as needed
+import { FormData, Person } from '../types/formTypes'; // Adjust the import based on your types file
+import PersonForm from '../components/PersonForm'; // Adjust the import path as needed
 import './FormPage.css';
 
 const FormPage: React.FC = () => {
@@ -12,7 +12,7 @@ const FormPage: React.FC = () => {
     people: [{
       firstName: '', middleName: '', lastName: '', dateOfBirth: '',
       address: { street: '', city: '', state: '', zipCode: '' },
-      uniqueId: '', email: '', phoneNumber: '', idPicture: '',
+      uniqueIdType: '', uniqueIdNumber: '', taxIdType: '', taxIdNumber: '', email: '', phoneNumber: '', idPicture: '',
       errors: {} // Add an "errors" object for each person to hold specific errors
     }],
   });
@@ -21,12 +21,15 @@ const FormPage: React.FC = () => {
   const navigate = useNavigate();
 
   // Function to handle input changes for people
-  const handleInputChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     const updatedPeople = [...formData.people];
+    
+    // Handle address change
     if (name in updatedPeople[index].address) {
       updatedPeople[index].address[name as keyof Person['address']] = value;
     } else {
+      // Handle the new fields (uniqueId, taxId, etc.)
       updatedPeople[index][name as keyof Omit<Person, 'address' | 'errors'>] = value;
     }
     setFormData({ ...formData, people: updatedPeople });
@@ -40,7 +43,7 @@ const FormPage: React.FC = () => {
         people: [...formData.people, {
           firstName: '', middleName: '', lastName: '', dateOfBirth: '',
           address: { street: '', city: '', state: '', zipCode: '' },
-          uniqueId: '', email: '', phoneNumber: '', idPicture: '',
+          uniqueIdType: '', uniqueIdNumber: '', taxIdType: '', taxIdNumber: '', email: '', phoneNumber: '', idPicture: '',
           errors: {} // Initialize error object for new person
         }]
       });
@@ -54,12 +57,13 @@ const FormPage: React.FC = () => {
     setFormData({ ...formData, people: updatedPeople });
   };
 
-  // Validation functions (same as before)
+  // Validation functions (including new ones)
   const validateName = (name: string) => /^[A-Za-z\s]{2,20}$/.test(name);
   const validateZipCode = (zip: string) => /^\d{5}$/.test(zip);
   const validateIdNumber = (id: string) => /^\d+$/.test(id);
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePhoneNumber = (phone: string) => /^\d{10}$/.test(phone); // Phone number validation
+  const validatePhoneNumber = (phone: string) => /^\d{10}$/.test(phone);
+  const validateTaxId = (taxId: string) => /^\d{9}$/.test(taxId); // Assuming EIN/SSN/TIN is a 9-digit number
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -84,8 +88,17 @@ const FormPage: React.FC = () => {
       if (!validateZipCode(person.address.zipCode)) {
         personErrors.zipCode = `Person ${index + 1}: Zip Code must be exactly 5 digits.`;
       }
-      if (!validateIdNumber(person.uniqueId)) {
-        personErrors.uniqueId = `Person ${index + 1}: ID Number must contain only numbers.`;
+      if (!validateIdNumber(person.uniqueIdNumber)) {
+        personErrors.uniqueIdNumber = `Person ${index + 1}: ID Number must contain only numbers.`;
+      }
+      if (!person.uniqueIdType) {
+        personErrors.uniqueIdType = `Person ${index + 1}: Please select a valid ID Type.`;
+      }
+      if (!person.taxIdNumber || !validateTaxId(person.taxIdNumber)) {
+        personErrors.taxIdNumber = `Person ${index + 1}: Please provide a valid Tax ID Number.`;
+      }
+      if (!person.taxIdType) {
+        personErrors.taxIdType = `Person ${index + 1}: Please select a valid Tax ID Type.`;
       }
       if (!validateEmail(person.email)) {
         personErrors.email = `Person ${index + 1}: Please enter a valid email address.`;
@@ -116,7 +129,7 @@ const FormPage: React.FC = () => {
         return personWithoutErrors;
       }), // Exclude errors from the data sent
     };
-    
+
     console.log("Data being sent to backend:", dataToSend); // Log the data to be sent
 
     try {
@@ -133,7 +146,7 @@ const FormPage: React.FC = () => {
 
   return (
     <div className="form-container" style={{ paddingTop: formData.people.length > 1 ? `${1100 * (formData.people.length - 1)}px` : '0' }}>
-      
+
       {/* Display global errors at the top */}
       {errors.length > 0 && (
         <div className="error-messages">

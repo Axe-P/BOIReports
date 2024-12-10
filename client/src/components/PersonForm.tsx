@@ -1,13 +1,11 @@
-// src/components/PersonForm.tsx
-
 import React from 'react';
 import AddressForm from './AddressForm';
 import { Person } from '../types/formTypes';
 
 interface PersonFormProps {
   person: Person;
-  onChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
-  errors: { [key: string]: string }; // Add errors property
+  onChange: (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  errors: { [key: string]: string };
   index: number;
   removePerson: (index: number) => void;
 }
@@ -16,6 +14,8 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
   return (
     <div className="person-form">
       <h4>Person {index + 1}</h4>
+
+      {/* Name Fields */}
       <div className="form-group">
         <label htmlFor={`firstName-${index}`}>First Name</label>
         <input
@@ -51,6 +51,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           required
         />
       </div>
+
       <div className="form-group">
         <label htmlFor={`dateOfBirth-${index}`}>Date of Birth</label>
         <input
@@ -66,18 +67,70 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
       {/* Address Form for this person */}
       <AddressForm address={person.address} onChange={onChange} index={index} />
 
+      {/* Unique ID Type Dropdown */}
       <div className="form-group">
-        <label htmlFor={`uniqueId-${index}`}>Unique ID Number</label>
+        <label htmlFor={`uniqueIdType-${index}`}>Unique ID Type</label>
+        <select
+          id={`uniqueIdType-${index}`}
+          name="uniqueIdType"
+          value={person.uniqueIdType}
+          onChange={(e) => onChange(index, e)}
+          required
+        >
+          <option value="">Select ID Type</option>
+          <option value="driversLicense">State Issued Driver's License</option>
+          <option value="stateId">State/Local/Tribe Issued ID</option>
+          <option value="usPassport">U.S. Passport</option>
+          <option value="foreignPassport">Foreign Passport</option>
+        </select>
+      </div>
+
+      {/* Unique ID Number Input */}
+      <div className="form-group">
+        <label htmlFor={`uniqueIdNumber-${index}`}>Unique ID Number</label>
         <input
           type="text"
-          id={`uniqueId-${index}`}
-          name="uniqueId"
-          placeholder="Unique ID"
-          value={person.uniqueId}
+          id={`uniqueIdNumber-${index}`}
+          name="uniqueIdNumber"
+          placeholder="Enter ID Number"
+          value={person.uniqueIdNumber}
           onChange={(e) => onChange(index, e)}
           required
         />
       </div>
+
+      {/* Tax Identification Type Dropdown */}
+      <div className="form-group">
+        <label htmlFor={`taxIdType-${index}`}>Tax Identification Type</label>
+        <select
+          id={`taxIdType-${index}`}
+          name="taxIdType"
+          value={person.taxIdType}
+          onChange={(e) => onChange(index, e)}
+          required
+        >
+          <option value="">Select Tax ID Type</option>
+          <option value="ein">EIN</option>
+          <option value="ssn">SSN/TIN</option>
+          <option value="foreign">Foreign</option>
+        </select>
+      </div>
+
+      {/* Tax ID Number Input */}
+      <div className="form-group">
+        <label htmlFor={`taxIdNumber-${index}`}>Tax ID Number</label>
+        <input
+          type="text"
+          id={`taxIdNumber-${index}`}
+          name="taxIdNumber"
+          placeholder="Enter Tax ID Number"
+          value={person.taxIdNumber}
+          onChange={(e) => onChange(index, e)}
+          required
+        />
+      </div>
+
+      {/* Email Input */}
       <div className="form-group">
         <label htmlFor={`email-${index}`}>Email</label>
         <input
@@ -90,6 +143,8 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           required
         />
       </div>
+
+      {/* Phone Number Input */}
       <div className="form-group">
         <label htmlFor={`phoneNumber-${index}`}>Phone Number</label>
         <input
@@ -102,6 +157,8 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           required
         />
       </div>
+
+      {/* ID Picture URL */}
       <div className="form-group">
         <label htmlFor={`idPicture-${index}`}>ID Picture (URL or Path)</label>
         <input
@@ -114,6 +171,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
         />
       </div>
 
+      {/* Remove Person Button */}
       {index > 0 && (
         <button
           type="button"

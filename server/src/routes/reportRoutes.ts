@@ -19,9 +19,10 @@ router.post('/submit', async (req, res) => {
 
     // Check required fields for each person
     if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || 
-        !person.idPicture || !person.address || !person.address.street || 
-        !person.address.city || !person.address.state || !person.address.zipCode || 
-        !person.email || !person.phoneNumber) {
+        !person.uniqueIdType || !person.taxIdentificationType || 
+        !person.taxIdentification || !person.idPicture || !person.address || 
+        !person.address.street || !person.address.city || !person.address.state || 
+        !person.address.zipCode || !person.email || !person.phoneNumber) {
       res.status(400).json({ message: `Person ${i + 1} has missing required fields.` });
       return;
     }
@@ -37,6 +38,33 @@ router.post('/submit', async (req, res) => {
 
     if (!phonePattern.test(person.phoneNumber)) {
       res.status(400).json({ message: `Person ${i + 1} has an invalid phone number format.` });
+      return;
+    }
+
+    // Validate the uniqueId based on its type
+    const validUniqueIdPatterns = {
+      'State-issued driver\'s license': /^\d+$/, // Numeric for driver's license
+      'State/local/tribe-issued ID': /^\d+$/, // Numeric for state/local ID
+      'U.S. passport': /^[A-Za-z0-9]+$/, // Alphanumeric for passport
+      'Foreign passport': /^[A-Za-z0-9]+$/ // Alphanumeric for foreign passport
+    };
+
+    const uniqueIdPattern = validUniqueIdPatterns[person.uniqueIdType as keyof typeof validUniqueIdPatterns];
+    if (!uniqueIdPattern || !uniqueIdPattern.test(person.uniqueId)) {
+      res.status(400).json({ message: `Person ${i + 1} has an invalid unique ID number for the selected ID type.` });
+      return;
+    }
+
+    // Validate the tax identification number (EIN, SSN/TIN, or Foreign)
+    const validTaxIdPatterns = {
+      'EIN': /^\d{9}$/, // 9 digits for EIN
+      'SSN/TIN': /^\d{9}$/, // 9 digits for SSN/TIN
+      'Foreign': /^[A-Za-z0-9]+$/ // Alphanumeric for Foreign tax ID
+    };
+
+    const taxIdPattern = validTaxIdPatterns[person.taxIdentificationType as keyof typeof validTaxIdPatterns];
+    if (!taxIdPattern || !taxIdPattern.test(person.taxIdentification)) {
+      res.status(400).json({ message: `Person ${i + 1} has an invalid tax identification number for the selected type.` });
       return;
     }
   }
