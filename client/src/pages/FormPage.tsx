@@ -20,7 +20,7 @@ const FormPage = () => {
     uniqueId: string;
     email: string;
     phoneNumber: string; // New field
-    idPicture: File | null; // New field
+    idPicture: string; // Changed from string | null to string
   }
 
   interface FormData {
@@ -35,7 +35,7 @@ const FormPage = () => {
     people: [{ 
       firstName: '', middleName: '', lastName: '', dateOfBirth: '', 
       address: { street: '', city: '', state: '', zipCode: '' }, 
-      uniqueId: '', email: '', phoneNumber: '', idPicture: null 
+      uniqueId: '', email: '', phoneNumber: '', idPicture: '' // Empty string instead of null
     }],
   });
 
@@ -50,19 +50,11 @@ const FormPage = () => {
       updatedPeople[index].address[name as keyof Address] = value;
     } else {
       if (name === 'idPicture') {
-        updatedPeople[index].idPicture = (e.target as HTMLInputElement).files ? (e.target as HTMLInputElement).files![0] : null;
+        updatedPeople[index].idPicture = value; // Handle as string
       } else {
         updatedPeople[index][name as keyof Omit<Person, 'address' | 'idPicture'>] = value;
       }
     }
-    setFormData({ ...formData, people: updatedPeople });
-  };
-
-  // Function to handle file input changes (ID Photo)
-  const handleFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    const updatedPeople = [...formData.people];
-    updatedPeople[index].idPicture = file;
     setFormData({ ...formData, people: updatedPeople });
   };
 
@@ -74,7 +66,7 @@ const FormPage = () => {
         people: [...formData.people, { 
           firstName: '', middleName: '', lastName: '', dateOfBirth: '', 
           address: { street: '', city: '', state: '', zipCode: '' }, 
-          uniqueId: '', email: '', phoneNumber: '', idPicture: null 
+          uniqueId: '', email: '', phoneNumber: '', idPicture: '' // Empty string instead of null
         }],
       });
     }
@@ -241,12 +233,12 @@ const FormPage = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor={`street-${index}`}>Street Address</label>
+              <label htmlFor={`street-${index}`}>Street</label>
               <input
                 type="text"
                 id={`street-${index}`}
                 name="street"
-                placeholder="Street Address"
+                placeholder="Street"
                 value={person.address.street}
                 onChange={(e) => handleInputChange(index, e)}
                 required
@@ -289,12 +281,12 @@ const FormPage = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor={`uniqueId-${index}`}>ID Number</label>
+              <label htmlFor={`uniqueId-${index}`}>Unique ID Number</label>
               <input
                 type="text"
                 id={`uniqueId-${index}`}
                 name="uniqueId"
-                placeholder="ID Number"
+                placeholder="Unique ID"
                 value={person.uniqueId}
                 onChange={(e) => handleInputChange(index, e)}
                 required
@@ -315,7 +307,7 @@ const FormPage = () => {
             <div className="form-group">
               <label htmlFor={`phoneNumber-${index}`}>Phone Number</label>
               <input
-                type="tel"
+                type="text"
                 id={`phoneNumber-${index}`}
                 name="phoneNumber"
                 placeholder="Phone Number"
@@ -325,28 +317,34 @@ const FormPage = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor={`idPicture-${index}`}>ID Photo</label>
+              <label htmlFor={`idPicture-${index}`}>ID Picture</label>
               <input
                 type="file"
                 id={`idPicture-${index}`}
                 name="idPicture"
-                accept="image/*"
-                onChange={(e) => handleFileChange(index, e)}
+                onChange={(e) => handleInputChange(index, e)}
                 required
               />
             </div>
-            {formData.people.length > 1 && (
-              <button type="button" onClick={() => removePerson(index)}>
+            {index > 0 && (
+              <button
+                type="button"
+                onClick={() => removePerson(index)}
+                className="remove-person-btn"
+              >
                 Remove Person
               </button>
             )}
           </div>
         ))}
 
-        <button type="button" onClick={addPerson} disabled={formData.people.length >= 4}>
+        <button type="button" onClick={addPerson} className="add-person-btn">
           Add Person
         </button>
-        <button type="submit">Submit</button>
+
+        <button type="submit" className="submit-btn">
+          Submit
+        </button>
       </form>
     </div>
   );
