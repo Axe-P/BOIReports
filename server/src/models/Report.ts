@@ -43,7 +43,10 @@ const personSchema = new mongoose.Schema({
   idPicture: {
     type: String, // URL to the uploaded image
     required: true
-  },
+  }
+}, { _id: false });  // Ensures that each person does not get its own ID, since it's part of an array
+
+const reportSchema = new mongoose.Schema({
   legalBusinessName: {
     type: String,
     required: true
@@ -51,10 +54,7 @@ const personSchema = new mongoose.Schema({
   DBA: {
     type: String, // optional field
     required: false
-  }
-}, { _id: false });  // Ensures that each person does not get its own ID, since it's part of an array
-
-const reportSchema = new mongoose.Schema({
+  },
   peopleData: {
     type: [personSchema], // This will hold an array of people data
     required: true,
