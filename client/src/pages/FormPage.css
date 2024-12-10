@@ -79,47 +79,6 @@ form button:active {
 }
 
 /* Media query for smaller screens like iPhone SE, etc. */
-@media (max-width: px) {
-  .form-container {
-    padding: 20px; /* More padding on small screens */
-  }
-
-  .form-top {
-    margin-top: 0; /* Reduce margin */
-    padding-top: 350px; /* Adjust padding-top for smaller devices */
-  }
-
-  form {
-    padding: 15px;
-    width: 100%;
-    max-width: 100%; /* Ensure the form stretches fully */
-  }
-
-  .form-description {
-    font-size: 14px; /* Make the form description smaller */
-  }
-
-  /* Make inputs and buttons full-width on mobile */
-  form input, form button {
-    font-size: 14px; /* Slightly smaller font size */
-    padding: 10px; /* Adjust padding for smaller screens */
-  }
-
-  /* Make the button full-width on small devices */
-  form button {
-    width: 100%; /* Button stretches across the full screen */
-  }
-
-  .form-top h2 {
-    font-size: 1.5rem; /* Reduce font size for mobile */
-  }
-
-  .form-top h3 {
-    font-size: 1.2rem; /* Slightly smaller subheading */
-  }
-}
-
-/* Media query for smaller screens like iPhone SE, etc. */
 @media (max-width: 768px) {
   .form-container {
     padding: 20px; /* More padding on small screens */
