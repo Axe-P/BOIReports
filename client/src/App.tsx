@@ -4,6 +4,7 @@ import FormPage from './pages/FormPage';
 import CompletionPage from './pages/CompletionPage';
 import LoginPage from './pages/LoginPage'; // Import LoginPage
 import AdminDashboard from './pages/AdminDashboard'; // Import AdminDashboard
+import ContactPage from './pages/ContactPage'; // Import ContactPage
 import Navbar from './components/Navbar'; // Import Navbar
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -31,6 +32,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Add Contact Route */}
+          <Route path="/contact" element={<ContactPage />} /> {/* Added the /contact route */}
         </Routes>
       </div>
     </>

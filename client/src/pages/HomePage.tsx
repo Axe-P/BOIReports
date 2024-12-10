@@ -12,8 +12,8 @@ const HomePage = () => {
     <div className="home-page">
       <h3>File your BOI Report with peace of mind</h3>
       <h1>Pax Accounting</h1>
-      <p>We will file your form within 48 hours of submission</p>
-      <p><strong>Pricing: $125</strong></p>
+      <h3>We will file your form within 48 hours of submission</h3>
+      <p>Pricing: $125</p>
       <button className="start-filing-btn" onClick={handleNavigateToForm}>
         Click here to file now!
       </button>

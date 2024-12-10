@@ -17,6 +17,7 @@ export interface Address {
     email: string;
     phoneNumber: string;
     idPicture: string;
+    errors: { [key: string]: string }; // Add errors property
   }
   
   export interface FormData {

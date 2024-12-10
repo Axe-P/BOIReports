@@ -1,0 +1,78 @@
+/* Ensure body and html are full height and width */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensure body and html take full height */
+    width: 100%;  /* Ensure body and html take full width */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    box-sizing: border-box; /* Include padding in the element's size */
+  }
+  
+  /* Main container for the contact page */
+  .contact-page {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    min-height: 100vh; /* Ensure the container takes at least full height of the screen */
+    width: 100vw; /* Full width of the viewport */
+    position: relative; /* To allow for positioning pseudo-element */
+    padding: 25px;
+    text-align: center; /* Center text inside */
+    
+    /* Cloud background image */
+    /* background-image: url('https://cdn.pixabay.com/photo/2018/05/22/19/32/clouds-3422258_1280.jpg'); */
+    background-size: cover; /* Ensure the image covers the entire screen */
+    background-position: center center; /* Center the image */
+    background-attachment: fixed; /* Keep the background fixed while scrolling */
+    background-repeat: no-repeat; /* Prevent repeating the image */
+  }
+  
+  /* Add semi-transparent overlay using ::before */
+  .contact-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay to make the image more transparent */
+    z-index: -1; /* Make sure the overlay stays behind the content */
+    pointer-events: none; /* Ensure overlay does not interfere with clicks */
+  }
+  
+  /* Set the font color to pitch black for better readability */
+  .contact-page, .contact-page * {
+    color: #000000; /* Set the text color to pitch black */
+  }
+  
+  /* Styling for the contact info section */
+  .contact-info {
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+  
+  .contact-link {
+    font-size: 1.5rem;
+    color: #007BFF;
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease;
+  }
+  
+  .contact-link:hover {
+    color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Mobile-specific styles */
+  @media (max-width: 768px) {
+    .contact-page {
+      padding: 15px; /* Slightly reduce padding on smaller screens */
+    }
+  
+    .contact-link {
+      font-size: 1.2rem; /* Adjust font size for small screens */
+    }
+  }
+  

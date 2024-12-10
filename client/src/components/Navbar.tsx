@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './Navbar.css'; // You can create a separate CSS file for styling
+import './Navbar.css'; // Assuming you have your own CSS file for styling
 
 const Navbar = () => {
   return (
@@ -10,6 +10,9 @@ const Navbar = () => {
         </li>
         <li>
           <Link to="/form" className="navbar-link">File Now</Link>
+        </li>
+        <li>
+          <Link to="/contact" className="navbar-link">Contact</Link> {/* Added Contact Link */}
         </li>
         <li>
           <a href="https://fincen.gov/boi" target="_blank" rel="noopener noreferrer" className="navbar-link">

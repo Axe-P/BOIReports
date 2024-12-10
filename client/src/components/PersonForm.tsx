@@ -7,6 +7,7 @@ import { Person } from '../types/formTypes';
 interface PersonFormProps {
   person: Person;
   onChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
+  errors: { [key: string]: string }; // Add errors property
   index: number;
   removePerson: (index: number) => void;
 }
