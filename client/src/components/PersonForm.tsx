@@ -78,10 +78,10 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           required
         >
           <option value="">Select ID Type</option>
-          <option value="driversLicense">State Issued Driver's License</option>
-          <option value="stateId">State/Local/Tribe Issued ID</option>
-          <option value="usPassport">U.S. Passport</option>
-          <option value="foreignPassport">Foreign Passport</option>
+          <option value="State-issued driver's license">State-issued driver's license</option>
+          <option value="State/local/tribe-issued ID">State/local/tribe-issued ID</option>
+          <option value="U.S. passport">U.S. passport</option>
+          <option value="Foreign passport">Foreign passport</option>
         </select>
       </div>
 
@@ -101,7 +101,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
 
       {/* Tax Identification Type Dropdown */}
       <div className="form-group">
-        <label htmlFor={`taxIdType-${index}`}>Tax Identification Type</label>
+        <label htmlFor={`taxIdType-${index}`}>Tax ID Type</label>
         <select
           id={`taxIdType-${index}`}
           name="taxIdType"
@@ -110,9 +110,9 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           required
         >
           <option value="">Select Tax ID Type</option>
-          <option value="ein">EIN</option>
-          <option value="ssn">SSN/TIN</option>
-          <option value="foreign">Foreign</option>
+          <option value="EIN">EIN</option>
+          <option value="SSN/TIN">SSN/TIN</option>
+          <option value="Foreign">Foreign</option>
         </select>
       </div>
 
