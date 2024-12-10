@@ -40,7 +40,7 @@ const personSchema = new mongoose.Schema({
   uniqueId: {
     type: {
       type: String, // Type of ID (e.g., 'Driver\'s License', 'Passport', etc.)
-      enum: ['Driver\'s License', 'State/Local/Tribe ID', 'U.S. Passport', 'Foreign Passport'],
+      // enum: ['Driver\'s License', 'State/Local/Tribe ID', 'U.S. Passport', 'Foreign Passport'],
       required: true,
     },
     number: {
@@ -52,7 +52,7 @@ const personSchema = new mongoose.Schema({
   taxId: {
     type: {
       type: String,
-      enum: ['EIN', 'SSN/TIN', 'Foreign'],
+      // enum: ['EIN', 'SSN/TIN', 'Foreign'],
       required: true,
     },
     number: {
