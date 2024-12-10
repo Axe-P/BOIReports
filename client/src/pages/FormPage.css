@@ -129,7 +129,7 @@ form button:active {
   }
 
   .form-top {
-    padding-top: 725px; /* Adjust padding-top for very small devices */
+    padding-top: 750px; /* Adjust padding-top for very small devices */
   }
 
   .form-top h2 {
