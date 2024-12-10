@@ -119,7 +119,7 @@ form button:active {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 500px) {
   .form-container {
     padding: 10px; /* Further reduce padding on very small screens */
   }
@@ -129,7 +129,7 @@ form button:active {
   }
 
   .form-top {
-    padding-top: 525px; /* Adjust padding-top for very small devices */
+    padding-top: 725px; /* Adjust padding-top for very small devices */
   }
 
   .form-top h2 {
