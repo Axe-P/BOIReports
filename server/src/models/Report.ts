@@ -34,34 +34,31 @@ const personSchema = new mongoose.Schema({
     zipCode: {
       type: String,
       required: true,
+      match: [/^\d{5}$/, 'Please provide a valid 5-digit zip code.'],
     },
   },
-  // Update uniqueId field to store type and value
   uniqueId: {
     type: {
-      type: String, // Type of ID (e.g., 'Driver\'s License', 'Passport', etc.)
-      // enum: ['Driver\'s License', 'State/Local/Tribe ID', 'U.S. Passport', 'Foreign Passport'],
+      type: String, // Removed enum validation
       required: true,
     },
     number: {
-      type: String, // The unique ID number itself
+      type: String, // No restriction here
       required: true,
     },
   },
-  // Update taxId field to be a nested object like uniqueId
   taxId: {
     type: {
-      type: String,
-      // enum: ['EIN', 'SSN/TIN', 'Foreign'],
+      type: String, // Removed enum validation
       required: true,
     },
     number: {
       type: String,
-      required: true, // You can add format validation for SSN, EIN, etc.
+      required: true,
     },
   },
   idPicture: {
-    type: String, // URL to the uploaded image (optional)
+    type: String,
     required: false,
   },
   email: {
@@ -79,10 +76,10 @@ const personSchema = new mongoose.Schema({
 // Define the report schema
 const reportSchema = new mongoose.Schema({
   peopleData: {
-    type: [personSchema], // This will hold an array of people data
+    type: [personSchema],
     required: true,
     validate: {
-      validator: function (v: any) {
+      validator: function (v: string) {
         return v.length <= 4; // Ensure no more than 4 people
       },
       message: 'Cannot have more than 4 people.',

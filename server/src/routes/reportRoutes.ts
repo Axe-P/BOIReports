@@ -19,8 +19,8 @@ router.post('/submit', async (req, res) => {
 
     // Check required fields for each person
     if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || 
-        !person.uniqueIdType || !person.taxIdentificationType || 
-        !person.taxIdentification || !person.idPicture || !person.address || 
+        !person.uniqueId.type || !person.taxId || !person.taxId.type || 
+        !person.taxId.number || !person.address || 
         !person.address.street || !person.address.city || !person.address.state || 
         !person.address.zipCode || !person.email || !person.phoneNumber) {
       res.status(400).json({ message: `Person ${i + 1} has missing required fields.` });
@@ -49,8 +49,8 @@ router.post('/submit', async (req, res) => {
       'Foreign passport': /^[A-Za-z0-9]+$/ // Alphanumeric for foreign passport
     };
 
-    const uniqueIdPattern = validUniqueIdPatterns[person.uniqueIdType as keyof typeof validUniqueIdPatterns];
-    if (!uniqueIdPattern || !uniqueIdPattern.test(person.uniqueId)) {
+    const uniqueIdPattern = validUniqueIdPatterns[person.uniqueId.type as keyof typeof validUniqueIdPatterns];
+    if (!uniqueIdPattern || !uniqueIdPattern.test(person.uniqueId.number)) {
       res.status(400).json({ message: `Person ${i + 1} has an invalid unique ID number for the selected ID type.` });
       return;
     }
@@ -62,8 +62,8 @@ router.post('/submit', async (req, res) => {
       'Foreign': /^[A-Za-z0-9]+$/ // Alphanumeric for Foreign tax ID
     };
 
-    const taxIdPattern = validTaxIdPatterns[person.taxIdentificationType as keyof typeof validTaxIdPatterns];
-    if (!taxIdPattern || !taxIdPattern.test(person.taxIdentification)) {
+    const taxIdPattern = validTaxIdPatterns[person.taxId.type as keyof typeof validTaxIdPatterns];
+    if (!taxIdPattern || !taxIdPattern.test(person.taxId.number)) {
       res.status(400).json({ message: `Person ${i + 1} has an invalid tax identification number for the selected type.` });
       return;
     }
