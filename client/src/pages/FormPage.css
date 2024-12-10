@@ -18,7 +18,7 @@
   align-items: center; /* Center the content horizontally */
   text-align: center;
   padding: 0px;
-  padding-top: 425px; /* Keep your padding-top */
+  padding-top: 500px; /* Keep your padding-top */
   box-sizing: border-box;
   margin-top: calc(60px + 20px); /* Same margin as your code */
 }
@@ -86,7 +86,7 @@ form button:active {
 
   .form-top {
     margin-top: 0; /* Reduce margin */
-    padding-top: 450px; /* Adjust padding-top for smaller devices */
+    padding-top: 550px; /* Adjust padding-top for smaller devices */
   }
 
   form {
@@ -127,7 +127,7 @@ form button:active {
 
   .form-top {
     margin-top: 0; /* Ensure no extra space above the form */
-    padding-top: 670px; /* Adjust padding-top for tablets */
+    padding-top: 730px; /* Adjust padding-top for tablets */
   }
 
   form {
@@ -169,7 +169,7 @@ form button:active {
   }
 
   .form-top {
-    padding-top: 750px; /* Adjust padding-top for very small devices */
+    padding-top: 820px; /* Adjust padding-top for very small devices */
   }
 
   .form-top h2 {

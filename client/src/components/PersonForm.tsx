@@ -99,37 +99,6 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
         />
       </div>
 
-      {/* Tax Identification Type Dropdown */}
-      <div className="form-group">
-        <label htmlFor={`taxIdType-${index}`}>Tax ID Type</label>
-        <select
-          id={`taxIdType-${index}`}
-          name="taxIdType"
-          value={person.taxIdType}
-          onChange={(e) => onChange(index, e)}
-          required
-        >
-          <option value="">Select Tax ID Type</option>
-          <option value="EIN">EIN</option>
-          <option value="SSN/TIN">SSN/TIN</option>
-          <option value="Foreign">Foreign</option>
-        </select>
-      </div>
-
-      {/* Tax ID Number Input */}
-      <div className="form-group">
-        <label htmlFor={`taxIdNumber-${index}`}>Tax ID Number</label>
-        <input
-          type="text"
-          id={`taxIdNumber-${index}`}
-          name="taxIdNumber"
-          placeholder="Enter Tax ID Number"
-          value={person.taxIdNumber}
-          onChange={(e) => onChange(index, e)}
-          required
-        />
-      </div>
-
       {/* Email Input */}
       <div className="form-group">
         <label htmlFor={`email-${index}`}>Email</label>

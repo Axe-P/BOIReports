@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// Define person schema with updated fields
+// Define person schema with updated fields (removes taxId)
 const personSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -47,16 +47,6 @@ const personSchema = new mongoose.Schema({
       required: true,
     },
   },
-  taxId: {
-    type: {
-      type: String, // Removed enum validation
-      required: true,
-    },
-    number: {
-      type: String,
-      required: true,
-    },
-  },
   idPicture: {
     type: String,
     required: false,
@@ -92,6 +82,15 @@ const reportSchema = new mongoose.Schema({
   DBA: {
     type: String, // Optional field
     required: false,
+  },
+  taxIdType: {
+    type: String, // Business Tax ID Type
+    required: true,
+    enum: ['EIN', 'SSN/TIN', 'Foreign'], // You can enforce enum validation for business tax ID type
+  },
+  taxIdNumber: {
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,

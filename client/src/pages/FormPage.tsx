@@ -9,10 +9,12 @@ const FormPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     legalBusinessName: '',
     DBA: '',
+    taxIdType: '',  // Added business-level taxIdType
+    taxIdNumber: '',  // Added business-level taxIdNumber
     people: [{
       firstName: '', middleName: '', lastName: '', dateOfBirth: '',
       address: { street: '', city: '', state: '', zipCode: '' },
-      uniqueIdType: '', uniqueIdNumber: '', taxIdType: '', taxIdNumber: '', email: '', phoneNumber: '', idPicture: '',
+      uniqueIdType: '', uniqueIdNumber: '', email: '', phoneNumber: '', idPicture: '',
       errors: {} // Add an "errors" object for each person to hold specific errors
     }],
   });
@@ -43,7 +45,7 @@ const FormPage: React.FC = () => {
         people: [...formData.people, {
           firstName: '', middleName: '', lastName: '', dateOfBirth: '',
           address: { street: '', city: '', state: '', zipCode: '' },
-          uniqueIdType: '', uniqueIdNumber: '', taxIdType: '', taxIdNumber: '', email: '', phoneNumber: '', idPicture: '',
+          uniqueIdType: '', uniqueIdNumber: '', email: '', phoneNumber: '', idPicture: '',
           errors: {} // Initialize error object for new person
         }]
       });
@@ -99,12 +101,6 @@ const FormPage: React.FC = () => {
       if (!person.uniqueIdType) {
         personErrors.uniqueIdType = `Person ${index + 1}: Please select a valid ID Type.`;
       }
-      if (!person.taxIdNumber || !validateTaxId(person.taxIdNumber)) {
-        personErrors.taxIdNumber = `Person ${index + 1}: Please provide a valid Tax ID Number.`;
-      }
-      if (!person.taxIdType) {
-        personErrors.taxIdType = `Person ${index + 1}: Please select a valid Tax ID Type.`;
-      }
       if (!validateEmail(person.email)) {
         personErrors.email = `Person ${index + 1}: Please enter a valid email address.`;
       }
@@ -119,6 +115,14 @@ const FormPage: React.FC = () => {
       }
     });
 
+    // Validate business-level taxIdType and taxIdNumber
+    if (!formData.taxIdType) {
+      newErrors.push("Business tax ID Type is required.");
+    }
+    if (!formData.taxIdNumber || !validateTaxId(formData.taxIdNumber)) {
+      newErrors.push("Business tax ID Number is required and must be a valid 9-digit number.");
+    }
+
     if (newErrors.length > 0) {
       console.log("Validation errors found:", newErrors);
       setErrors(newErrors); // Set global errors
@@ -130,19 +134,19 @@ const FormPage: React.FC = () => {
     const dataToSend = {
       legalBusinessName: formData.legalBusinessName,
       DBA: formData.DBA,
+      taxId: {
+        type: formData.taxIdType,
+        number: formData.taxIdNumber,
+      },
       peopleData: formData.people.map(person => {
-        const { uniqueIdType, uniqueIdNumber, taxIdType, taxIdNumber, ...personWithoutErrors } = person; // Exclude errors and other unnecessary fields
+        const { uniqueIdType, uniqueIdNumber, ...personWithoutErrors } = person; // Exclude errors and other unnecessary fields
 
-        // Nest uniqueId and taxId data properly
+        // Nest uniqueId data properly
         return {
           ...personWithoutErrors,
           uniqueId: {
             type: uniqueIdType,
             number: uniqueIdNumber,
-          },
-          taxId: {
-            type: taxIdType,
-            number: taxIdNumber,
           },
         };
       }),
@@ -205,6 +209,36 @@ const FormPage: React.FC = () => {
             placeholder="DBA (Optional)"
             value={formData.DBA}
             onChange={(e) => setFormData({ ...formData, DBA: e.target.value })}
+          />
+        </div>
+
+        {/* New fields for business tax ID */}
+        <div className="form-group">
+          <label htmlFor="taxIdType">Business Tax ID Type</label>
+          <select
+            id="taxIdType"
+            name="taxIdType"
+            value={formData.taxIdType}
+            onChange={(e) => setFormData({ ...formData, taxIdType: e.target.value })}
+            required
+          >
+            <option value="">Select Tax ID Type</option>
+            <option value="EIN">EIN</option>
+            <option value="SSN/TIN">SSN/TIN</option>
+            <option value="Foreign">Foreign</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="taxIdNumber">Business Tax ID Number</label>
+          <input
+            type="text"
+            id="taxIdNumber"
+            name="taxIdNumber"
+            value={formData.taxIdNumber}
+            onChange={(e) => setFormData({ ...formData, taxIdNumber: e.target.value })}
+            placeholder="Enter business tax ID"
+            required
           />
         </div>
 

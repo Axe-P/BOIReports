@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Route to submit a new report (public access)
 router.post('/submit', async (req, res) => {
-  const { peopleData, legalBusinessName, DBA } = req.body;
+  const { peopleData, legalBusinessName, DBA, taxIdType, taxIdNumber } = req.body;
 
   // Validate that peopleData is an array and contains no more than 4 people
   if (!Array.isArray(peopleData) || peopleData.length === 0 || peopleData.length > 4) {
@@ -19,8 +19,7 @@ router.post('/submit', async (req, res) => {
 
     // Check required fields for each person
     if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || 
-        !person.uniqueId.type || !person.taxId || !person.taxId.type || 
-        !person.taxId.number || !person.address || 
+        !person.uniqueId.type || !person.address || 
         !person.address.street || !person.address.city || !person.address.state || 
         !person.address.zipCode || !person.email || !person.phoneNumber) {
       res.status(400).json({ message: `Person ${i + 1} has missing required fields.` });
@@ -54,19 +53,24 @@ router.post('/submit', async (req, res) => {
       res.status(400).json({ message: `Person ${i + 1} has an invalid unique ID number for the selected ID type.` });
       return;
     }
+  }
 
-    // Validate the tax identification number (EIN, SSN/TIN, or Foreign)
-    const validTaxIdPatterns = {
-      'EIN': /^\d{9}$/, // 9 digits for EIN
-      'SSN/TIN': /^\d{9}$/, // 9 digits for SSN/TIN
-      'Foreign': /^[A-Za-z0-9]+$/ // Alphanumeric for Foreign tax ID
-    };
+  // Validate the business tax ID type and number
+  const validTaxIdPatterns = {
+    'EIN': /^\d{9}$/, // 9 digits for EIN
+    'SSN/TIN': /^\d{9}$/, // 9 digits for SSN/TIN
+    'Foreign': /^[A-Za-z0-9]+$/ // Alphanumeric for Foreign tax ID
+  };
 
-    const taxIdPattern = validTaxIdPatterns[person.taxId.type as keyof typeof validTaxIdPatterns];
-    if (!taxIdPattern || !taxIdPattern.test(person.taxId.number)) {
-      res.status(400).json({ message: `Person ${i + 1} has an invalid tax identification number for the selected type.` });
-      return;
-    }
+  if (!taxIdType || !taxIdNumber) {
+    res.status(400).json({ message: 'Tax ID Type and Tax ID Number are required for the business.' });
+    return;
+  }
+
+  const taxIdPattern = validTaxIdPatterns[taxIdType as keyof typeof validTaxIdPatterns];
+  if (!taxIdPattern || !taxIdPattern.test(taxIdNumber)) {
+    res.status(400).json({ message: 'Invalid Tax ID Type or Number for the business.' });
+    return;
   }
 
   try {
@@ -74,7 +78,9 @@ router.post('/submit', async (req, res) => {
     const newReport = new Report({
       peopleData,
       legalBusinessName,
-      DBA
+      DBA,
+      taxIdType,
+      taxIdNumber,
     });
 
     // Save the new report to the database
