@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-interface Submission {
+interface Address {
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
+interface Person {
   firstName: string;
   middleName: string;
   lastName: string;
   dateOfBirth: string;
   email: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  };
+  phoneNumber: string;
   uniqueId: string;
   idPicture: string;
+  address: Address;
+}
+
+interface Submission {
+  legalBusinessName: string;
+  DBA: string;
+  peopleData: Person[]; // people data will be an array of Person objects
 }
 
 const AdminDashboard: React.FC = () => {
@@ -39,20 +48,22 @@ const AdminDashboard: React.FC = () => {
   };
 
   // Handle deletion of a submission
-  const handleDelete = async (uniqueId: string) => {
+  const handleDelete = async (legalBusinessName: string, DBA: string) => {
     try {
       const token = localStorage.getItem("token");
-      console.log("Attempting to delete uniqueId:", uniqueId); // Debugging
       const response = await axios.delete(
-        `https://boireports.onrender.com/api/admin/delete/${uniqueId}`,
+        `https://boireports.onrender.com/api/admin/delete/${legalBusinessName}/${DBA}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Delete response:", response.data); // Debugging
       // Remove the deleted submission from state
       setSubmissions((prev) =>
-        prev.filter((submission) => submission.uniqueId !== uniqueId)
+        prev.filter(
+          (submission) =>
+            submission.legalBusinessName !== legalBusinessName &&
+            submission.DBA !== DBA
+        )
       );
       alert("Submission deleted successfully.");
     } catch (err: unknown) {
@@ -77,19 +88,45 @@ const AdminDashboard: React.FC = () => {
       {submissions.length > 0 ? (
         <div className="submissions-container">
           {submissions.map((submission) => (
-            <div key={submission.uniqueId} className="submission-card">
-              <h2>{`${submission.firstName} ${submission.lastName}`}</h2>
-              <p>
-                <strong>Email:</strong> {submission.email}
-              </p>
-              <p>
-                <strong>Details:</strong> ID Number: {submission.uniqueId}
-              </p>
-              <p>
-                <strong>Address:</strong>{" "}
-                {`${submission.address.street}, ${submission.address.city}, ${submission.address.state}, ${submission.address.zipCode}`}
-              </p>
-              <button onClick={() => handleDelete(submission.uniqueId)}>
+            <div key={`${submission.legalBusinessName}-${submission.DBA}`} className="submission-card">
+              <h2>{submission.legalBusinessName}</h2>
+              {submission.DBA && <h3>DBA: {submission.DBA}</h3>}
+              <div>
+                <h4>People:</h4>
+                {submission.peopleData.map((person, index) => (
+                  <div key={person.uniqueId} className="person-details">
+                    <h5>
+                      {person.firstName} {person.middleName} {person.lastName}
+                    </h5>
+                    <p>
+                      <strong>Email:</strong> {person.email}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong> {person.phoneNumber}
+                    </p>
+                    <p>
+                      <strong>ID Number:</strong> {person.uniqueId}
+                    </p>
+                    <p>
+                      <strong>Date of Birth:</strong> {person.dateOfBirth}
+                    </p>
+                    <p>
+                      <strong>Address:</strong> {`${person.address.street}, ${person.address.city}, ${person.address.state}, ${person.address.zipCode}`}
+                    </p>
+                    {/* You can also render the ID picture if needed */}
+                    {person.idPicture && (
+                      <img
+                        src={person.idPicture}
+                        alt="ID Picture"
+                        style={{ width: "100px", height: "auto" }}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => handleDelete(submission.legalBusinessName, submission.DBA)}
+              >
                 Delete
               </button>
               <button>Edit</button> {/* Add edit functionality as needed */}
