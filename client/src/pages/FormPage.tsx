@@ -19,10 +19,11 @@ const FormPage: React.FC = () => {
       address: { street: '', city: '', state: '', zipCode: '' },
       uniqueIdType: '', uniqueIdNumber: '', email: '', phoneNumber: '', idPicture: '',
       errors: {}
-    }],
+    }], 
   });
 
   const [errors, setErrors] = useState<string[]>([]);
+  const [isChecked, setIsChecked] = useState<boolean>(false);  // State for checkbox
   const navigate = useNavigate();
 
   const handleInputChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -124,6 +125,10 @@ const FormPage: React.FC = () => {
     }
   };
 
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(e.target.checked);  // Update checkbox state
+  };
+
   return (
     <div className="form-container" style={{ paddingTop: formData.people.length > 1 ? `${1150 * (formData.people.length - 1)}px` : '0' }}>
       <h1>Business and Person Details Form</h1>
@@ -165,7 +170,18 @@ const FormPage: React.FC = () => {
           <button type="button" onClick={addPerson}>Add beneficial owner</button>
         )}
 
-        <button type="submit">Submit</button>
+          <div className="checkbox-container">
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
+            <label>
+              I authorize Pax Accounting to submit the BOI Report on behalf of our company
+            </label>
+          </div>
+
+        <button type="submit" disabled={!isChecked}>Submit</button>
       </form>
     </div>
   );

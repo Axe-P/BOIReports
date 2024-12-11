@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./AdminDashboard.css";
 
+// Types for the form data structure
 interface Address {
   street: string;
   city: string;
@@ -15,23 +17,34 @@ interface Person {
   dateOfBirth: string;
   email: string;
   phoneNumber: string;
-  uniqueId: string;
-  idPicture: string;
+  uniqueId: {
+    type: string;
+    number: string;
+  };
   address: Address;
 }
 
 interface Submission {
   legalBusinessName: string;
   DBA: string;
-  peopleData: Person[]; // people data will be an array of Person objects
+  taxId: {
+    type: string;
+    number: string;
+  };
+  businessAddress: Address;
+  peopleData: Person[];
 }
 
 const AdminDashboard: React.FC = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // Fetch all submissions
+  // Fetch submissions from the API
   const fetchSubmissions = async () => {
+    setLoading(true);
+    setError(null); // Reset error before making the request
+
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
@@ -42,35 +55,10 @@ const AdminDashboard: React.FC = () => {
       );
       setSubmissions(response.data);
     } catch (err) {
-      setError("Failed to fetch data. Please log in again.");
-      console.error(err); // Debugging
-    }
-  };
-
-  // Handle deletion of a submission by uniqueId
-  const handleDelete = async (uniqueId: string) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.delete(
-        `https://boireports.onrender.com/api/admin/delete/${uniqueId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      // Remove the deleted submission from state
-      setSubmissions((prev) =>
-        prev.filter((submission) =>
-          submission.peopleData.every((person) => person.uniqueId !== uniqueId)
-        )
-      );
-      alert("Submission deleted successfully.");
-    } catch (err: unknown) {
-      alert("Failed to delete the submission.");
-      if (axios.isAxiosError(err)) {
-        console.error("Error deleting submission:", err.response || err); // Debugging
-      } else {
-        console.error("Error deleting submission:", err); // Debugging
-      }
+      console.error("Error fetching submissions:", err);
+      setError("Failed to fetch submissions. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,64 +66,90 @@ const AdminDashboard: React.FC = () => {
     fetchSubmissions();
   }, []);
 
-  if (error) return <p>{error}</p>;
+  // Render error message
+  const renderError = () => {
+    if (error) {
+      return <div className="error-message">{error}</div>;
+    }
+  };
+
+  // Render loading state
+  const renderLoading = () => {
+    if (loading) {
+      return <div className="loading-message">Loading submissions...</div>;
+    }
+  };
+
+  // Render person details within a submission
+  const renderPersonDetails = (person: Person) => (
+    <div key={person.uniqueId.number} className="person-details">
+      <h5>
+        {person.firstName} {person.middleName} {person.lastName}
+      </h5>
+      <p>
+        <strong>Email:</strong> {person.email}
+      </p>
+      <p>
+        <strong>Phone:</strong> {person.phoneNumber}
+      </p>
+      <p>
+        <strong>ID Type:</strong> {person.uniqueId.type}
+      </p>
+      <p>
+        <strong>ID Number:</strong> {person.uniqueId.number}
+      </p>
+      <p>
+        <strong>Date of Birth:</strong> {person.dateOfBirth.substring(0, 10)}
+      </p>
+      <p>
+        <strong>Address:</strong> {`${person.address.street}, ${person.address.city}, ${person.address.state}, ${person.address.zipCode}`}
+      </p>
+    </div>
+  );
+
+  // Render a submission card
+  const renderSubmissionCard = (submission: Submission) => (
+    <div key={`${submission.legalBusinessName}-${submission.DBA}`} className="submission-card">
+      <h2>{submission.legalBusinessName}</h2>
+      {submission.DBA && <h3>DBA: {submission.DBA}</h3>}
+      <div>
+        <h4>Tax ID:</h4>
+        <p>
+          <strong>Type:</strong> {submission.taxId.type}
+        </p>
+        <p>
+          <strong>Number:</strong> {submission.taxId.number}
+        </p>
+
+        <h4>Business Address:</h4>
+        <p>
+          {submission.businessAddress.street}, {submission.businessAddress.city}, {submission.businessAddress.state}, {submission.businessAddress.zipCode}
+        </p>
+      </div>
+
+      <div>
+        <h4>People:</h4>
+        {submission.peopleData.map(renderPersonDetails)}
+      </div>
+    </div>
+  );
+
+  // Render submissions if available
+  const renderSubmissions = () => {
+    if (submissions.length === 0) {
+      return <p>No submissions found.</p>;
+    }
+
+    return submissions.map(renderSubmissionCard);
+  };
 
   return (
     <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
-      {submissions.length > 0 ? (
-        <div className="submissions-container">
-          {submissions.map((submission) => (
-            <div
-              key={`${submission.legalBusinessName}-${submission.DBA}`}
-              className="submission-card"
-            >
-              <h2>{submission.legalBusinessName}</h2>
-              {submission.DBA && <h3>DBA: {submission.DBA}</h3>}
-              <div>
-                <h4>People:</h4>
-                {submission.peopleData.map((person) => (
-                  <div key={person.uniqueId} className="person-details">
-                    <h5>
-                      {person.firstName} {person.middleName} {person.lastName}
-                    </h5>
-                    <p>
-                      <strong>Email:</strong> {person.email}
-                    </p>
-                    <p>
-                      <strong>Phone:</strong> {person.phoneNumber}
-                    </p>
-                    <p>
-                      <strong>ID Number:</strong> {person.uniqueId}
-                    </p>
-                    <p>
-                      <strong>Date of Birth:</strong> {person.dateOfBirth}
-                    </p>
-                    <p>
-                      <strong>Address:</strong> {`${person.address.street}, ${person.address.city}, ${person.address.state}, ${person.address.zipCode}`}
-                    </p>
-                    {/* Render the ID picture if it exists */}
-                    {person.idPicture && (
-                      <img
-                        src={person.idPicture}
-                        alt="ID Picture"
-                        style={{ width: "100px", height: "auto" }}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              {/* Delete button */}
-              <button onClick={() => handleDelete(submission.peopleData[0].uniqueId)}>
-                Delete
-              </button>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>No submissions found.</p>
-      )}
+      {renderError()}
+      {renderLoading()}
+      <div className="submissions-container">
+        {renderSubmissions()}
+      </div>
     </div>
   );
 };

@@ -78,6 +78,35 @@ form button:active {
   color: #333;
 }
 
+/* Checkbox container */
+.checkbox-container {
+  display: flex;
+  flex-direction: column; /* Stack checkbox under label */
+  align-items: flex-start; /* Align items to the left */
+  margin-bottom: 20px; /* Add space below the checkbox */
+  padding-left: 20px; /* Ensure padding to the left for alignment */
+  width: 100%; /* Ensure it stretches across the form */
+}
+
+/* Style for the checkbox */
+.checkbox-container input[type="checkbox"] {
+  transform: scale(1.5); /* Make the checkbox larger */
+  margin-top: 10px; /* Space above checkbox */
+}
+
+/* Style for the label */
+.checkbox-container label {
+  font-size: 18px; /* Label font size */
+  color: #333; /* Label color */
+  margin-bottom: 5px; /* Space below the label */
+}
+
+/* Style for the submit button when disabled */
+form button:disabled {
+  background-color: #ccc; /* Grey out the submit button when disabled */
+  cursor: not-allowed; /* Show a not-allowed cursor */
+}
+
 /* Media query for smaller screens like iPhone SE, etc. */
 @media (max-width: 768px) {
   .form-container {

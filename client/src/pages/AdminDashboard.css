@@ -1,47 +1,136 @@
+/* Admin Dashboard CSS */
+
+/* Main container for the admin dashboard */
 .admin-dashboard {
-    padding: 20px;
+  min-height: 100vh; /* Full height to avoid clipping */
+  padding-top: 500px; /* Adjusted padding to accommodate fixed navbar */
+  box-sizing: border-box;
+}
+
+/* Container for submissions */
+.submissions-container {
+  margin-top: 20px; /* Add space between title and first submission */
+  padding: 20px;
+}
+
+/* Each individual submission card */
+.submission-card {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Space between each submission card */
+}
+
+/* Styling for headings inside each submission card */
+.submission-card h2, .submission-card h3 {
+  margin-top: 0; /* Remove extra margin */
+  font-size: 1.6rem;
+  color: #333; /* Ensure heading colors are readable */
+}
+
+/* Styling for paragraphs inside submission cards */
+.submission-card p {
+  color: #555;
+  font-size: 14px;
+}
+
+/* Container for people details inside each submission card */
+.person-details {
+  margin-bottom: 20px; /* Space between person details */
+}
+
+/* Styling for person details (each person in a submission) */
+h5 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.person-details p {
+  margin: 5px 0;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Loading message styling */
+.loading-message {
+  color: #007bff;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Responsive adjustments for smaller screens (max-width 768px) */
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding-top: 60px; /* Smaller padding for smaller devices */
   }
-  
-  .submission-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+
+  .submission-card {
+    padding: 10px;
+  }
+
+  .submissions-container {
+    margin-top: 30px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2, h3 {
+    font-size: 1.2rem;
+  }
+
+  .person-details {
+    margin-bottom: 15px;
+  }
+
+  .submission-card p,
+  .person-details p {
+    font-size: 12px;
+  }
+}
+
+/* Further responsive adjustments for very small screens (max-width 500px) */
+@media (max-width: 500px) {
+  .admin-dashboard {
+    padding-top: 50px; /* Even smaller padding for mobile screens */
+  }
+
+  .submission-card {
+    padding: 8px;
+  }
+
+  .submissions-container {
     margin-top: 20px;
   }
-  
-  .submission-card {
-    background-color: #f9f9f9;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h2, h3 {
+    font-size: 1.1rem;
   }
-  
-  .submission-card h3 {
-    margin-top: 0;
+
+  h5 {
+    font-size: 1rem;
   }
-  
-  .submission-card p {
-    margin: 5px 0;
+
+  .submission-card p,
+  .person-details p {
+    font-size: 11px;
   }
-  
-  .actions {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
-  }
-  
-  .actions button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .actions button:hover {
-    background-color: #0056b3;
-  }
-  
+}

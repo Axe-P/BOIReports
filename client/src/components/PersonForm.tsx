@@ -127,7 +127,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
         />
       </div>
 
-      {/* ID Picture URL */}
+      {/* ID Picture URL
       <div className="form-group">
         <label htmlFor={`idPicture-${index}`}>ID Picture (URL or Path)</label>
         <input
@@ -138,7 +138,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           value={person.idPicture}
           onChange={(e) => onChange(index, e)}
         />
-      </div>
+      </div> */}
 
       {/* Remove Person Button */}
       {index > 0 && (
