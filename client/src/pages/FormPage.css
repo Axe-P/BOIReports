@@ -98,7 +98,7 @@ form button:active {
 .checkbox-container label {
   font-size: 18px; /* Label font size */
   color: #333; /* Label color */
-  margin-bottom: 5px; /* Space below the label */
+  /* margin-bottom: 5px; Space below the label */
 }
 
 /* Style for the submit button when disabled */
