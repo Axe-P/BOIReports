@@ -118,6 +118,7 @@ const FormPage: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
       });
       navigate('/completion');
+      window.open('https://square.link/u/lLLM2Z1e', '_blank');
     } catch (error) {
       console.error('Error submitting report:', error);
     }
