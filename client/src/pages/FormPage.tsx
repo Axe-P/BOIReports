@@ -140,7 +140,7 @@ const FormPage: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="form">
         <div className="form-top">
-          <h2>Any person with 25% or more ownership of the company, or who plays a significant role. Must be listed as a beneficial owner and information must be provided below</h2>
+          <h2>Any person with at least 25% ownership in the business or any person who plays a significant role in the company must be included as a beneficial owner.</h2>
           <h3>All fields must be completed!</h3>
           <p>Upfront pricing: $125 to file your BOI Report</p>
         </div>
@@ -155,13 +155,13 @@ const FormPage: React.FC = () => {
           setFormData={setFormData}
         />
 
-        <h2>Person Information</h2>
+        <h2>Beneficial Owner Information</h2>
         {formData.people.map((person, index) => (
           <PersonForm key={index} person={person} onChange={handleInputChange} index={index} removePerson={removePerson} errors={person.errors} />
         ))}
 
         {formData.people.length < 4 && (
-          <button type="button" onClick={addPerson}>Add Person</button>
+          <button type="button" onClick={addPerson}>Add beneficial owner</button>
         )}
 
         <button type="submit">Submit</button>

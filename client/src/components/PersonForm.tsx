@@ -147,7 +147,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           onClick={() => removePerson(index)}
           className="remove-person-btn"
         >
-          Remove Person
+          Remove beneficial owner
         </button>
       )}
     </div>

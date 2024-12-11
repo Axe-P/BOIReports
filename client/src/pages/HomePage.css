@@ -85,3 +85,10 @@ html, body {
     font-size: 1.2rem; /* Ensure button text fits */
   }
 }
+
+.important-notices p {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0; /* Add spacing between notices */
+  text-align: center; /* Center-align text */
+}
