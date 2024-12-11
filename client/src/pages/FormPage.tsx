@@ -19,7 +19,8 @@ const FormPage: React.FC = () => {
       address: { street: '', city: '', state: '', zipCode: '' },
       uniqueIdType: '', uniqueIdNumber: '', email: '', phoneNumber: '', idPicture: '',
       errors: {}
-    }], 
+    }],
+    errors: [],
   });
 
   const [errors, setErrors] = useState<string[]>([]);
@@ -164,6 +165,7 @@ const FormPage: React.FC = () => {
           taxIdNumber={formData.taxIdNumber}
           formData={formData}
           setFormData={setFormData}
+          setErrors={setErrors}
         />
 
         <h2>Beneficial Owner Information</h2>

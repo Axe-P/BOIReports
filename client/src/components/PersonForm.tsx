@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AddressForm from './AddressForm';
 import { Person } from '../types/formTypes';
 
@@ -11,6 +11,60 @@ interface PersonFormProps {
 }
 
 const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, removePerson }) => {
+  // Error state to store individual field errors
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+
+  // Validation function for each field
+  const validate = () => {
+    const errors: { [key: string]: string } = {};
+
+    // Name Fields Validation
+    if (!person.firstName.trim()) {
+      errors.firstName = 'First Name is required';
+    }
+    if (!person.lastName.trim()) {
+      errors.lastName = 'Last Name is required';
+    }
+
+    // Date of Birth Validation
+    if (!person.dateOfBirth.trim()) {
+      errors.dateOfBirth = 'Date of Birth is required';
+    }
+
+    // Email Validation (Basic email pattern check)
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!person.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!emailPattern.test(person.email)) {
+      errors.email = 'Invalid email format';
+    }
+
+    // Phone Number Validation (basic check for numbers)
+    const phonePattern = /^[0-9]{10}$/;
+    if (!person.phoneNumber.trim()) {
+      errors.phoneNumber = 'Phone Number is required';
+    } else if (!phonePattern.test(person.phoneNumber)) {
+      errors.phoneNumber = 'Phone number must be 10 digits';
+    }
+
+    // Update form errors state
+    setFormErrors(errors);
+    return errors;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate the form
+    const errors = validate();
+
+    // Only submit if there are no errors
+    if (Object.keys(errors).length === 0) {
+      console.log('Form submitted');
+      // Call your submit handler or state change here
+    }
+  };
+
   return (
     <div className="person-form">
       <h4>Person {index + 1}</h4>
@@ -27,18 +81,10 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           onChange={(e) => onChange(index, e)}
           required
         />
+        {formErrors.firstName && <div className="error">{formErrors.firstName}</div>}
       </div>
-      {/* <div className="form-group">
-        <label htmlFor={`middleName-${index}`}>Middle Name</label>
-        <input
-          type="text"
-          id={`middleName-${index}`}
-          name="middleName"
-          placeholder="Middle Name"
-          value={person.middleName}
-          onChange={(e) => onChange(index, e)}
-        />
-      </div> */}
+
+      {/* Last Name Field */}
       <div className="form-group">
         <label htmlFor={`lastName-${index}`}>Last Name</label>
         <input
@@ -50,8 +96,10 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           onChange={(e) => onChange(index, e)}
           required
         />
+        {formErrors.lastName && <div className="error">{formErrors.lastName}</div>}
       </div>
 
+      {/* Date of Birth */}
       <div className="form-group">
         <label htmlFor={`dateOfBirth-${index}`}>Date of Birth</label>
         <input
@@ -62,6 +110,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           onChange={(e) => onChange(index, e)}
           required
         />
+        {formErrors.dateOfBirth && <div className="error">{formErrors.dateOfBirth}</div>}
       </div>
 
       {/* Address Form for this person */}
@@ -85,7 +134,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
         </select>
       </div>
 
-      {/* Unique ID Number Input */}
+      {/* Unique ID Number */}
       <div className="form-group">
         <label htmlFor={`uniqueIdNumber-${index}`}>Unique ID Number</label>
         <input
@@ -99,7 +148,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
         />
       </div>
 
-      {/* Email Input */}
+      {/* Email */}
       <div className="form-group">
         <label htmlFor={`email-${index}`}>Email</label>
         <input
@@ -111,9 +160,10 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           onChange={(e) => onChange(index, e)}
           required
         />
+        {formErrors.email && <div className="error">{formErrors.email}</div>}
       </div>
 
-      {/* Phone Number Input */}
+      {/* Phone Number */}
       <div className="form-group">
         <label htmlFor={`phoneNumber-${index}`}>Phone Number</label>
         <input
@@ -125,20 +175,8 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           onChange={(e) => onChange(index, e)}
           required
         />
+        {formErrors.phoneNumber && <div className="error">{formErrors.phoneNumber}</div>}
       </div>
-
-      {/* ID Picture URL
-      <div className="form-group">
-        <label htmlFor={`idPicture-${index}`}>ID Picture (URL or Path)</label>
-        <input
-          type="text"
-          id={`idPicture-${index}`}
-          name="idPicture"
-          placeholder="ID Picture URL or Path"
-          value={person.idPicture}
-          onChange={(e) => onChange(index, e)}
-        />
-      </div> */}
 
       {/* Remove Person Button */}
       {index > 0 && (
@@ -150,6 +188,11 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           Remove beneficial owner
         </button>
       )}
+
+      {/* Submit Button */}
+      <button type="submit" onClick={handleSubmit}>
+        Submit
+      </button>
     </div>
   );
 };
