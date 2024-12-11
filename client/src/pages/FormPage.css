@@ -27,7 +27,7 @@ form {
   display: flex;
   flex-direction: column; /* Stack form fields vertically */
   width: 100%;
-  max-width: 60%; /* Max width for the form */
+  max-width: 70%; /* Max width for the form */
   padding: 25px;
   background-color: white; /* White background for form */
   border-radius: 8px; /* Rounded corners */
@@ -121,7 +121,7 @@ form button:disabled {
   form {
     padding: 15px;
     width: 100%;
-    max-width: 60%; /* Ensure the form stretches fully */
+    max-width: 75%; /* Ensure the form stretches fully */
   }
 
   .form-description {
@@ -162,7 +162,7 @@ form button:disabled {
   form {
     padding: 20px; /* Add padding to the form */
     width: 100%;
-    max-width: 60%; /* Ensure the form does not stretch too wide */
+    max-width: 75%; /* Ensure the form does not stretch too wide */
   }
 
   .form-description {
