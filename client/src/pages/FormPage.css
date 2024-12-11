@@ -18,7 +18,7 @@
   align-items: center; /* Center the content horizontally */
   text-align: center;
   padding: 0px;
-  padding-top: 800px; /* Keep your padding-top */
+  padding-top: 920px; /* Keep your padding-top */
   box-sizing: border-box;
   margin-top: calc(60px + 20px); /* Same margin as your code */
 }
@@ -88,17 +88,47 @@ form button:active {
   width: 100%; /* Ensure it stretches across the form */
 }
 
-/* Style for the checkbox */
+/* Custom Style for the checkbox */
 .checkbox-container input[type="checkbox"] {
   transform: scale(1.5); /* Make the checkbox larger */
   margin-top: 10px; /* Space above checkbox */
+  appearance: none; /* Remove default checkbox appearance */
+  background-color: #fff; /* Set background color to white */
+  border: 2px solid #ccc; /* Border color for better visibility */
+  border-radius: 4px; /* Round corners for the checkbox */
+  position: relative; /* To position the checkmark inside the checkbox */
+  width: 22px; /* Custom width */
+  height: 22px; /* Custom height */
+  transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+}
+
+/* On check, add a visible checkmark */
+.checkbox-container input[type="checkbox"]:checked {
+  background-color: #4CAF50; /* Green background when checked */
+  border-color: #4CAF50; /* Green border when checked */
+}
+
+.checkbox-container input[type="checkbox"]:checked::before {
+  content: '\2713'; /* Unicode checkmark symbol */
+  color: white; /* Make checkmark white */
+  position: absolute;
+  top: 0; /* Align checkmark inside the checkbox */
+  left: 2px; /* Adjust checkmark position */
+  font-size: 18px; /* Adjust checkmark size */
+  font-weight: bold;
+}
+
+/* Focused state for the checkbox */
+.checkbox-container input[type="checkbox"]:focus {
+  border-color: #4CAF50; /* Green border on focus */
+  outline: none; /* Remove default outline */
 }
 
 /* Style for the label */
 .checkbox-container label {
   font-size: 18px; /* Label font size */
   color: #333; /* Label color */
-  /* margin-bottom: 5px; Space below the label */
+  margin-bottom: 5px; /* Space below the label */
 }
 
 /* Style for the submit button when disabled */
@@ -146,45 +176,28 @@ form button:disabled {
   .form-top h3 {
     font-size: 1.2rem; /* Slightly smaller subheading */
   }
-}
 
-/* Media query for tablets (768px to 1024px) */
-@media (min-width: 769px) and (max-height: 1024px) {
-  .form-container {
-    padding: 20px; /* Add padding for tablets */
+  /* Adjust checkbox for smaller screens */
+  .checkbox-container input[type="checkbox"] {
+    transform: scale(1.5); /* Maintain larger checkbox for visibility */
+    background-color: #fff; /* Ensure background remains white */
+    border: 2px solid #ccc; /* Ensure contrast */
+    width: 24px; /* Slightly larger checkbox */
+    height: 24px; /* Slightly larger checkbox */
   }
 
-  .form-top {
-    margin-top: 0; /* Ensure no extra space above the form */
-    padding-top: 1150px; /* Adjust padding-top for tablets */
+  .checkbox-container input[type="checkbox"]:checked {
+    background-color: #4CAF50; /* Keep green background when checked */
+    border-color: #4CAF50; /* Green border when checked */
   }
 
-  form {
-    padding: 20px; /* Add padding to the form */
-    width: 100%;
-    max-width: 75%; /* Ensure the form does not stretch too wide */
-  }
-
-  .form-description {
-    font-size: 16px; /* Increase the description font size for readability */
-  }
-
-  /* Ensure form inputs and buttons look good on tablet */
-  form input, form button {
-    font-size: 15px; /* Slightly larger font size */
-    padding: 12px; /* Padding for better touch accessibility */
-  }
-
-  form button {
-    width: 100%; /* Button stretches across the full screen */
-  }
-
-  .form-top h2 {
-    font-size: 1.8rem; /* Adjust heading font size for tablets */
-  }
-
-  .form-top h3 {
-    font-size: 1.5rem; /* Increase subheading font size */
+  .checkbox-container input[type="checkbox"]:checked::before {
+    content: '\2713'; /* Unicode checkmark symbol */
+    color: white; /* Keep checkmark white */
+    position: absolute;
+    top: 0;
+    left: 3px; /* Adjust position for better visibility */
+    font-size: 20px; /* Slightly larger checkmark */
   }
 }
 
@@ -212,5 +225,15 @@ form button:disabled {
   form input, form button {
     font-size: 14px;
     padding: 10px;
+  }
+
+  /* Adjust checkbox for very small screens */
+  .checkbox-container input[type="checkbox"] {
+    width: 28px; /* Larger checkbox on very small screens */
+    height: 28px; /* Larger checkbox */
+  }
+
+  .checkbox-container input[type="checkbox"]:checked::before {
+    font-size: 22px; /* Larger checkmark on very small screens */
   }
 }
