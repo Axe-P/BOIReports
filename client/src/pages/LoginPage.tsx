@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://boireports.onrender.com/api/superuser/login", { username, password });
+      const response = await axios.post("https://boireports-production.up.railway.app/api/superuser/login", { username, password });
       localStorage.setItem("token", response.data.token);
       window.location.href = "/admin";
     } catch {

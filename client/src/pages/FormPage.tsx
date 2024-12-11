@@ -115,7 +115,7 @@ const FormPage: React.FC = () => {
     };
 
     try {
-      await axios.post('https://boireports.onrender.com/api/reports/submit', dataToSend, {
+      await axios.post('https://boireports-production.up.railway.app/api/reports/submit', dataToSend, {
         headers: { 'Content-Type': 'application/json' },
       });
       navigate('/completion');

@@ -48,7 +48,7 @@ const AdminDashboard: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://boireports.onrender.com/api/admin/all",
+        "https://boireports-production.up.railway.app/api/admin/all",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
