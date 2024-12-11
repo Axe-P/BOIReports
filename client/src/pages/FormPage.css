@@ -27,7 +27,7 @@ form {
   display: flex;
   flex-direction: column; /* Stack form fields vertically */
   width: 100%;
-  max-width: 750px; /* Max width for the form */
+  max-width: 980px; /* Max width for the form */
   padding: 25px;
   background-color: white; /* White background for form */
   border-radius: 8px; /* Rounded corners */
