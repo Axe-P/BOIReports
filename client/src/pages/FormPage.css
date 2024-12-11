@@ -18,7 +18,7 @@
   align-items: center; /* Center the content horizontally */
   text-align: center;
   padding: 0px;
-  padding-top: 1050px; /* Keep your padding-top */
+  padding-top: 920px; /* Keep your padding-top */
   box-sizing: border-box;
   margin-top: calc(60px + 20px); /* Same margin as your code */
 }

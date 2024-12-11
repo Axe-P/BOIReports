@@ -28,5 +28,4 @@ export interface FormData {
   people: Person[];            // Array of people associated with the business
   taxIdType: string;           // Business tax ID type (e.g., 'EIN', 'SSN/TIN', 'Foreign')
   taxIdNumber: string;         // Business tax ID number
-  errors: string[]; // Add errors as an array of strings
 }
