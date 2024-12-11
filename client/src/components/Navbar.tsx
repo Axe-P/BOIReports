@@ -15,7 +15,7 @@ const Navbar = () => {
           <Link to="/contact" className="navbar-link">Contact</Link> {/* Added Contact Link */}
         </li>
         <li>
-          <a href="https://fincen.gov/boi" target="_blank" rel="noopener noreferrer" className="navbar-link">
+          <a href="https://fincen.gov/boi-faqs" target="_blank" rel="noopener noreferrer" className="navbar-link">
             FAQ
           </a>
         </li>

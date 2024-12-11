@@ -28,7 +28,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           required
         />
       </div>
-      <div className="form-group">
+      {/* <div className="form-group">
         <label htmlFor={`middleName-${index}`}>Middle Name</label>
         <input
           type="text"
@@ -38,7 +38,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ person, onChange, index, remove
           value={person.middleName}
           onChange={(e) => onChange(index, e)}
         />
-      </div>
+      </div> */}
       <div className="form-group">
         <label htmlFor={`lastName-${index}`}>Last Name</label>
         <input

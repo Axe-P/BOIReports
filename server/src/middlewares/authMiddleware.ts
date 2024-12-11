@@ -30,7 +30,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
 
     // Check if the username in the token matches the superuser's username
-    if (decoded.username !== 'auntadmin') {
+    if (decoded.username !== 'paxaccounting') {
        res.status(403).json({ message: 'Access denied. Only superuser can access this route.' });
        return;
     }

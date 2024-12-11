@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();  // Use Router for route handlers
 
 // Superuser credentials (consider moving this to a DB or config file for real apps)
-const superuserUsername = 'auntadmin';
-const superuserPassword = bcrypt.hashSync('supersecurepassword', 10);  // Hash the password once
+const superuserUsername = 'paxaccounting';  // Username for the superuser
+const superuserPassword = bcrypt.hashSync('T@xes2024', 10);  // Hash the password once
 
 // POST /login for superuser login
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
