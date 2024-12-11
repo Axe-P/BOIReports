@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// Define person schema with updated fields (removes taxId)
+// Define person schema with updated fields
 const personSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -87,11 +87,30 @@ const reportSchema = new mongoose.Schema({
     type: {
       type: String, // Business Tax ID Type
       required: true,
-      enum: ['EIN', 'SSN/TIN', 'Foreign'], // You can enforce enum validation for business tax ID type
+      enum: ['EIN', 'SSN/TIN', 'Foreign'], // Enum validation for business tax ID type
     },
     number: {
       type: String,
       required: true,
+    },
+  },
+  businessAddress: {  // Adding business address field
+    street: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    zipCode: {
+      type: String,
+      required: true,
+      match: [/^\d{5}$/, 'Please provide a valid 5-digit zip code.'],
     },
   },
   createdAt: {

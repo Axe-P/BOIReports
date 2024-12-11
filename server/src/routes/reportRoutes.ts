@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Route to submit a new report (public access)
 router.post('/submit', async (req, res) => {
-  const { peopleData, legalBusinessName, DBA, taxId, taxIdNumber } = req.body;
+  const { peopleData, legalBusinessName, DBA, taxId, businessAddress } = req.body;
 
   // Validate that peopleData is an array and contains no more than 4 people
   if (!Array.isArray(peopleData) || peopleData.length === 0 || peopleData.length > 4) {
@@ -18,9 +18,9 @@ router.post('/submit', async (req, res) => {
     const person = peopleData[i];
 
     // Check required fields for each person
-    if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId || 
-        !person.uniqueId.type || !person.address || 
-        !person.address.street || !person.address.city || !person.address.state || 
+    if (!person.firstName || !person.lastName || !person.dateOfBirth || !person.uniqueId ||
+        !person.uniqueId.type || !person.address ||
+        !person.address.street || !person.address.city || !person.address.state ||
         !person.address.zipCode || !person.email || !person.phoneNumber) {
       res.status(400).json({ message: `Person ${i + 1} has missing required fields.` });
       return;
@@ -73,6 +73,12 @@ router.post('/submit', async (req, res) => {
     return;
   }
 
+  // Validate the business address
+  if (!businessAddress || !businessAddress.street || !businessAddress.city || !businessAddress.state || !businessAddress.zipCode) {
+    res.status(400).json({ message: 'Business address is required and must contain street, city, state, and zip code.' });
+    return;
+  }
+
   try {
     // Create a new report with the peopleData and business information
     const newReport = new Report({
@@ -80,6 +86,7 @@ router.post('/submit', async (req, res) => {
       legalBusinessName,
       DBA,
       taxId,  // Use the nested taxId object directly
+      businessAddress, // Include the business address
     });
 
     // Save the new report to the database
